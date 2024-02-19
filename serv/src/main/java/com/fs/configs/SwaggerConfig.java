@@ -1,24 +1,31 @@
 package com.fs.configs;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import java.util.Collections;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-@RequiredArgsConstructor
+@OpenAPIDefinition(
+    info = @Info(title = "Football Schedule API 명세서",
+        description = "좋아하는 팀과 선수를 구독하고 축구팀을 관리하는 앱 서버 입니다.",
+        version = "v1"))
 @Configuration
-@ComponentScan(basePackages = "com.fs")
 public class SwaggerConfig {
 
-  @Bean
-  public OpenAPI openAPI() {
-    return new OpenAPI()
-        .info(new Info()
-            .title("커머스 프로젝트 API")
-            .description("상품을 등록하고, 상품을 장바구니에 담는 기능을 제공합니다.")
-            .version("1.0.0"));
-  }
+    @Bean
+    public OpenAPI openAPI() {
+        SecurityScheme securityScheme = new SecurityScheme()
+            .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
+            .in(SecurityScheme.In.HEADER).name("Authorization");
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
+        return new OpenAPI()
+            .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
+            .security(Collections.singletonList(securityRequirement));
+    }
 
 }
