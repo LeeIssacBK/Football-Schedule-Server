@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -20,26 +23,26 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurityConfig {
 
     private static final String[] WHITE_LIST = {
-        "/**",
-        "/docs/index.html",
-        "/vendors/**",
-        "/swagger-ui.html",
-        "/swagger-ui/**",
-        "/swagger-resources/**",
-        "/v3/api-docs",
-        "/v3/api-docs/swagger-config"
+        "/**"
     };
 
     @Bean
     protected SecurityFilterChain config(HttpSecurity http) throws Exception {
         return http
-            .authorizeHttpRequests(authorize -> authorize.requestMatchers(WHITE_LIST).permitAll())
-            .csrf(AbstractHttpConfigurer::disable)
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-            .authorizeHttpRequests(
-                authorize -> authorize
-                    .requestMatchers(WHITE_LIST).permitAll()
-            ).build();
+            .authorizeHttpRequests(authorize ->
+                authorize.requestMatchers(WHITE_LIST).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/oauth/**", "/oauth2/callback", "/webjars/**").permitAll()
+                        .anyRequest().authenticated()
+            )
+            .csrf(AbstractHttpConfigurer::disable)
+            .build();
     }
 
     @Bean
