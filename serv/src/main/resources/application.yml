@@ -64,7 +64,11 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/fs_serv?zeroDateTimeBehavior=convertToNull&autoReconnection=true&autoReconnectForPools=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8
     username: fs_serv
     password: fs_serv
-
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: geolpo!@
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
