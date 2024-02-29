@@ -9,11 +9,8 @@ public class TokenDto {
 
     @Data
     public static class Login{
-
         private String userId;
-
         private String password;
-
     }
 
     @Builder
@@ -21,11 +18,8 @@ public class TokenDto {
     @AllArgsConstructor
     @Data
     public static class Token{
-
         private String accessToken;
-
         private String refreshToken;
-
     }
 
 }
