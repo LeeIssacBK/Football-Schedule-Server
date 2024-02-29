@@ -6,10 +6,9 @@ public class UserDto {
 
     @Data
     public static class Simple {
-
         private Long id;
-        private String userName;
-
+        private String userId;
+        private String name;
     }
 
 }

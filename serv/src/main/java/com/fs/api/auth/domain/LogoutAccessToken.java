@@ -1,4 +1,4 @@
-package com.fs.api.user.domain;
+package com.fs.api.auth.domain;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -8,23 +8,23 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
 @Getter
-@RedisHash("refreshToken")
+@RedisHash("logoutAccessToken")
 @AllArgsConstructor
 @Builder
-public class RefreshToken {
+public class LogoutAccessToken {
 
     @Id
     private String id;
 
-    private String refreshToken;
+    private String userId;
 
-    @TimeToLive             //Redis 유효시간 관리
+    @TimeToLive
     private Long expiration;
 
-    public static RefreshToken createRefreshToken(String userId, String refreshToken, Long remainingMilliSeconds){
-        return RefreshToken.builder()
-                .id(userId)
-                .refreshToken(refreshToken)
+    public static LogoutAccessToken createRefreshToken(String userId, String accessToken, Long remainingMilliSeconds){
+        return LogoutAccessToken.builder()
+                .id(accessToken)
+                .userId(userId)
                 .expiration(remainingMilliSeconds / 1000)
                 .build();
     }

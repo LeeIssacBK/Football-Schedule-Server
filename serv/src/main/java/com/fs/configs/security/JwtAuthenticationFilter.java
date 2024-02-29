@@ -1,6 +1,6 @@
 package com.fs.configs.security;
 
-import com.fs.api.user.domain.LogoutAccessTokenRepository;
+import com.fs.api.auth.repository.LogoutAccessTokenRepository;
 import com.fs.configs.security.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

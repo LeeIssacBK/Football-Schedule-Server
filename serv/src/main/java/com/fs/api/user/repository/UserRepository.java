@@ -1,5 +1,6 @@
-package com.fs.api.user.domain;
+package com.fs.api.user.repository;
 
+import com.fs.api.user.domain.User;
 import com.fs.configs.jpa.base.BaseRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +10,6 @@ import java.util.Optional;
 public interface UserRepository extends BaseRepository<User> {
 
     Optional<User> findByUserId(String userId);
+    long countByUserId(String userId);
 
 }

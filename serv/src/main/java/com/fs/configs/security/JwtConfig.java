@@ -22,6 +22,7 @@ import java.util.UUID;
 public class JwtConfig {
 
     private final AppProperties appProperties;
+
     @Value("app.oauth.token-signing-key")
     private String secretKey;
 

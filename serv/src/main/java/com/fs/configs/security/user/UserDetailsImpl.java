@@ -2,6 +2,8 @@ package com.fs.configs.security.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fs.api.user.domain.User;
+import com.fs.api.user.dto.UserDto;
+import com.fs.api.user.dto.UserDtoMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,12 +28,14 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+    private UserDto.Simple userDto;
 
-    public static UserDetails of(User user) {
+    public static UserDetailsImpl of(User user) {
         return UserDetailsImpl.builder()
                 .username(user.getUserId())
                 .password(user.getPassword())
                 .roles(user.getRoles())
+                .userDto(UserDtoMapper.INSTANCE.getSimple(user))
                 .build();
     }
 
@@ -76,6 +80,5 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 
 }

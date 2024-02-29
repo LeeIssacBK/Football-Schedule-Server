@@ -1,9 +1,12 @@
 package com.fs.configs.jpa.base;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,9 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
-@SuperBuilder
 @MappedSuperclass
-@NoArgsConstructor
 public class BaseDomain implements Serializable {
 
     @Id
@@ -21,9 +22,11 @@ public class BaseDomain implements Serializable {
     private long id;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
 }
