@@ -1,6 +1,6 @@
 package com.fs.configs.security;
 
-import com.fs.api.auth.repository.LogoutAccessTokenRepository;
+import com.fs.api.auth.repository.RefreshTokenRepository;
 import com.fs.configs.security.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -27,18 +27,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtConfig jwtConfig;
     private final UserDetailsServiceImpl userDetailsService;
-    private final LogoutAccessTokenRepository logoutAccessTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = getToken(request);
         if (accessToken != null) {
-            checkLogout(accessToken);
             Jws<Claims> jws = jwtConfig.getClaims(accessToken);
             if (jws != null) {
                 String username = jws.getBody().get("user_name", String.class);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                validateAccessToken(accessToken, userDetails);
+                validateAccessToken(accessToken);
                 processSecurity(request, userDetails);
             }
         }
@@ -54,14 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private void checkLogout(String accessToken) {
-        if (logoutAccessTokenRepository.existsById(accessToken)) {
-            throw new IllegalArgumentException("already logout");
-        }
-    }
-
-    private void validateAccessToken(String accessToken, UserDetails userDetails) {
-        if (!jwtConfig.validateToken(accessToken, userDetails)) {
+    private void validateAccessToken(String accessToken) {
+        if (!jwtConfig.validateToken(accessToken)) {
             throw new IllegalArgumentException("token validate fail");
         }
     }

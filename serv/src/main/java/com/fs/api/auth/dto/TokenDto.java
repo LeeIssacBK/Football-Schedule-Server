@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 
 public class TokenDto {
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     @Data
-    public static class Login{
+    public static class Login {
         private String userId;
         private String password;
     }
@@ -17,7 +20,7 @@ public class TokenDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
-    public static class Token{
+    public static class Token {
         private String accessToken;
         private String refreshToken;
     }

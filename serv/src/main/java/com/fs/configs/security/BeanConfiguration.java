@@ -1,5 +1,6 @@
 package com.fs.configs.security;
 
+import com.fs.configs.security.support.CustomAccessDeniedHandler;
 import com.fs.configs.security.support.RestAuthenticationEntryPoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,13 @@ public class BeanConfiguration {
     public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
         return new RestAuthenticationEntryPoint();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
 
 
 }

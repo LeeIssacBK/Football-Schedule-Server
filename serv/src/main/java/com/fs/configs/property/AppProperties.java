@@ -29,12 +29,9 @@ public class AppProperties {
     @Setter
     @ToString
     public static class Oauth {
-        private boolean enabled;
         private String clientId;
         private String clientSecret;
         private String tokenSigningKey;
-        private int tokenValiditySeconds;
-        private int refreshTokenValiditySeconds;
     }
 
 }

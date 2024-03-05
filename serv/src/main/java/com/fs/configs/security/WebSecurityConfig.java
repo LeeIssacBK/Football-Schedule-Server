@@ -1,5 +1,6 @@
 package com.fs.configs.security;
 
+import com.fs.configs.security.support.CustomAccessDeniedHandler;
 import com.fs.configs.security.support.RestAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,8 @@ public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
     private static final String[] WHITE_LIST = {
         "/",
         "/swagger-ui/**",
@@ -54,8 +57,11 @@ public class WebSecurityConfig {
                         .requestMatchers("/oauth/**", "/oauth2/callback", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
             )
-            .exceptionHandling(exceptionHandlingConfigurer ->
-                    exceptionHandlingConfigurer.authenticationEntryPoint(restAuthenticationEntryPoint))
+            .exceptionHandling(exceptionHandlingConfigurer -> {
+                exceptionHandlingConfigurer.authenticationEntryPoint(restAuthenticationEntryPoint);
+                exceptionHandlingConfigurer.accessDeniedHandler(customAccessDeniedHandler);
+                }
+            )
             .securityMatcher("/**")
             .sessionManagement(sessionManagementConfigurer
                         -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

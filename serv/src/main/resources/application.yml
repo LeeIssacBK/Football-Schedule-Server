@@ -11,8 +11,6 @@ app:
     client-id: fs-serv
     client-secret: geol-po!@#
     token-signing-key: ${app.oauth.client-secret}:${app.oauth.client-id}
-    token-validity-seconds: 30
-    refresh-token-validity-seconds: 1800
 
 spring:
   batch:

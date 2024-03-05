@@ -8,7 +8,6 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +21,6 @@ import java.util.UUID;
 public class JwtConfig {
 
     private final AppProperties appProperties;
-
-    @Value("app.oauth.token-signing-key")
-    private String secretKey;
 
     //토큰 생성
     public String generateToken(User user, JwtExpirationEnums expire) {
@@ -42,24 +38,26 @@ public class JwtConfig {
                 .setClaims(claims)  //정보주입 (userId + roles)
                 .setIssuedAt(now)   //발행시각
                 .setExpiration(new Date(System.currentTimeMillis() + expire.getValue()))    //만료시간
-                .signWith(SignatureAlgorithm.HS256, secretKey)  //토큰의 암호화 알고리즘
+                .signWith(SignatureAlgorithm.HS256, appProperties.getOauth().getTokenSigningKey())  //토큰의 암호화 알고리즘
                 .compact();
     }
 
     public Jws<Claims> getClaims(String token) {
         try {
-            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return Jwts.parser()
+                    .setSigningKey(appProperties.getOauth().getTokenSigningKey())
+                    .parseClaimsJws(token);
         } catch (Exception e) {
             return null;
         }
     }
 
     //토큰 유효성 체크
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = getClaims(token);
             if (claims != null) {
-                return !claims.getBody().getExpiration().before(new Date()) && claims.getBody().get("user_name", String.class).equals(userDetails.getUsername());
+                return !claims.getBody().getExpiration().before(new Date());
             } else {
                 return false;
             }
