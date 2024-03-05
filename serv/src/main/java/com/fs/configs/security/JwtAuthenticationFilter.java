@@ -1,6 +1,7 @@
 package com.fs.configs.security;
 
 import com.fs.api.auth.repository.RefreshTokenRepository;
+import com.fs.common.utils.JwtProvider;
 import com.fs.configs.security.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -25,7 +26,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtConfig jwtConfig;
+    private final JwtProvider jwtProvider;
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -33,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = getToken(request);
         if (accessToken != null) {
-            Jws<Claims> jws = jwtConfig.getClaims(accessToken);
+            Jws<Claims> jws = jwtProvider.getClaims(accessToken);
             if (jws != null) {
                 String username = jws.getBody().get("user_name", String.class);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -54,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void validateAccessToken(String accessToken) {
-        if (!jwtConfig.validateToken(accessToken)) {
+        if (!jwtProvider.validateToken(accessToken)) {
             throw new IllegalArgumentException("token validate fail");
         }
     }

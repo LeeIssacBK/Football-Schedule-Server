@@ -1,9 +1,9 @@
 package com.fs.api.auth.domain;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
@@ -14,17 +14,17 @@ import org.springframework.data.redis.core.TimeToLive;
 public class RefreshToken {
 
     @Id
-    private String id;
-
     private String refreshToken;
+
+    private String userId;
 
     @TimeToLive
     private Long expiration;
 
-    public static RefreshToken createRefreshToken(String userId, String refreshToken, Long remainingMilliSeconds){
+    public static RefreshToken createRefreshToken(String refreshToken, String userId, Long remainingMilliSeconds){
         return RefreshToken.builder()
-                .id(userId)
                 .refreshToken(refreshToken)
+                .userId(userId)
                 .expiration(remainingMilliSeconds / 1000)
                 .build();
     }

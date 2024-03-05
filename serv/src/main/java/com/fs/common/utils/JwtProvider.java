@@ -1,14 +1,13 @@
-package com.fs.configs.security;
+package com.fs.common.utils;
 
+import com.fs.api.user.domain.User;
 import com.fs.common.enums.JwtExpirationEnums;
 import com.fs.configs.property.AppProperties;
-import com.fs.api.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class JwtConfig {
+public class JwtProvider {
 
     private final AppProperties appProperties;
 
@@ -50,6 +49,10 @@ public class JwtConfig {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public String getUserId(String token) {
+        return String.valueOf(getClaims(token).getBody().get("user_name"));
     }
 
     //토큰 유효성 체크

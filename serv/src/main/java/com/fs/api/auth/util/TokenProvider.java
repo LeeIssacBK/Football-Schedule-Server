@@ -6,7 +6,8 @@ import com.fs.api.auth.repository.RefreshTokenRepository;
 import com.fs.api.user.domain.User;
 import com.fs.api.user.repository.UserRepository;
 import com.fs.common.enums.JwtExpirationEnums;
-import com.fs.configs.security.JwtConfig;
+import com.fs.common.utils.JwtProvider;
+import com.fs.common.utils.RedisProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,15 @@ public class TokenProvider {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtConfig jwtConfig;
+    private final JwtProvider jwtProvider;
+    private final RedisProvider redisProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
 
     public TokenDto.Token login(TokenDto.Login login) {
         User user = userRepository.findByUserId(login.getUserId()).orElseThrow();
         checkPassword(login.getPassword(), user.getPassword());
-        String accessToken = jwtConfig.generateToken(user, JwtExpirationEnums.ACCESS_TOKEN_EXPIRATION_TIME);
+        String accessToken = jwtProvider.generateToken(user, JwtExpirationEnums.ACCESS_TOKEN_EXPIRATION_TIME);
         RefreshToken refreshToken = saveRefreshToken(user);
         return TokenDto.Token.builder()
                 .accessToken(accessToken)
@@ -42,30 +44,32 @@ public class TokenProvider {
 
     private RefreshToken saveRefreshToken(User user) {
         return refreshTokenRepository.save(
-                RefreshToken.createRefreshToken(user.getUserId()
-                        , jwtConfig.generateToken(user, JwtExpirationEnums.REFRESH_TOKEN_EXPIRATION_TIME)
+                RefreshToken.createRefreshToken(
+                        jwtProvider.generateToken(user, JwtExpirationEnums.REFRESH_TOKEN_EXPIRATION_TIME)
+                        , user.getUserId()
                         , JwtExpirationEnums.REFRESH_TOKEN_EXPIRATION_TIME.getValue()));
     }
 
     public TokenDto.Token reissue(String refreshToken) {
-        RefreshToken redisRefreshToken = refreshTokenRepository.findRefreshTokenByRefreshToken(refreshToken).orElseThrow(() -> new RuntimeException("not found refresh token"));
-        User user = userRepository.findByUserId(redisRefreshToken.getId()).orElseThrow();
+        RefreshToken redisRefreshToken = refreshTokenRepository.findById(refreshToken).orElseThrow(() -> new RuntimeException("not found refresh token"));
+        User user = userRepository.findByUserId(redisRefreshToken.getUserId()).orElseThrow(() -> new RuntimeException("not found user"));
         return reissueRefreshToken(refreshToken, user);
     }
 
     private TokenDto.Token reissueRefreshToken(String refreshToken, User user) {
         TokenDto.Token token = TokenDto.Token.builder()
-                .accessToken(jwtConfig.generateToken(user, JwtExpirationEnums.ACCESS_TOKEN_EXPIRATION_TIME))
+                .accessToken(jwtProvider.generateToken(user, JwtExpirationEnums.ACCESS_TOKEN_EXPIRATION_TIME))
                 .refreshToken(refreshToken)
                 .build();
         if (lessThanReissueExpirationTimesLeft(refreshToken)) {
             token.setRefreshToken(saveRefreshToken(user).getRefreshToken());
+            refreshTokenRepository.deleteById(refreshToken);
         }
         return token;
     }
 
     private boolean lessThanReissueExpirationTimesLeft(String refreshToken) {
-        return jwtConfig.getRemainMilliSeconds(refreshToken) < JwtExpirationEnums.REFRESH_TOKEN_EXPIRATION_TIME.getValue();
+        return jwtProvider.getRemainMilliSeconds(refreshToken) <= 0;
     }
 
 }
