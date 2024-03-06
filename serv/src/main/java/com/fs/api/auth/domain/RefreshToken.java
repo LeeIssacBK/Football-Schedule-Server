@@ -21,7 +21,7 @@ public class RefreshToken {
     @TimeToLive
     private Long expiration;
 
-    public static RefreshToken createRefreshToken(String refreshToken, String userId, Long remainingMilliSeconds){
+    public static RefreshToken createRefreshToken(String refreshToken, String userId, Long remainingMilliSeconds) {
         return RefreshToken.builder()
                 .refreshToken(refreshToken)
                 .userId(userId)

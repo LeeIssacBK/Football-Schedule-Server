@@ -27,6 +27,6 @@ public class BaseDomain implements Serializable {
 
     @LastModifiedDate
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
 }
