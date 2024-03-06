@@ -6,6 +6,8 @@ import com.fs.api.auth.repository.RefreshTokenRepository;
 import com.fs.api.user.domain.User;
 import com.fs.api.user.repository.UserRepository;
 import com.fs.common.enums.JwtExpirationEnums;
+import com.fs.common.exceptions.NotFoundException;
+import com.fs.common.exceptions.NotMatchedException;
 import com.fs.common.utils.JwtProvider;
 import com.fs.common.utils.RedisProvider;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,10 @@ public class TokenProvider {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final RedisProvider redisProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-
     public TokenDto.Token login(TokenDto.Login login) {
-        User user = userRepository.findByUserId(login.getUserId()).orElseThrow();
+        User user = userRepository.findByUserId(login.getUserId()).orElseThrow(() -> new NotFoundException("user"));
         checkPassword(login.getPassword(), user.getPassword());
         String accessToken = jwtProvider.generateToken(user, JwtExpirationEnums.ACCESS_TOKEN_EXPIRATION_TIME);
         RefreshToken refreshToken = saveRefreshToken(user);
@@ -38,7 +38,7 @@ public class TokenProvider {
 
     public void checkPassword(String password1, String password2) {
         if (!passwordEncoder.matches(password1, password2)) {
-            throw new IllegalArgumentException("not matched password");
+            throw new NotMatchedException("not matched password");
         }
     }
 
@@ -51,8 +51,8 @@ public class TokenProvider {
     }
 
     public TokenDto.Token reissue(String refreshToken) {
-        RefreshToken redisRefreshToken = refreshTokenRepository.findById(refreshToken).orElseThrow(() -> new RuntimeException("not found refresh token"));
-        User user = userRepository.findByUserId(redisRefreshToken.getUserId()).orElseThrow(() -> new RuntimeException("not found user"));
+        RefreshToken redisRefreshToken = refreshTokenRepository.findById(refreshToken).orElseThrow(() -> new NotFoundException("refresh token"));
+        User user = userRepository.findByUserId(redisRefreshToken.getUserId()).orElseThrow(() -> new NotFoundException("user"));
         return reissueRefreshToken(refreshToken, user);
     }
 

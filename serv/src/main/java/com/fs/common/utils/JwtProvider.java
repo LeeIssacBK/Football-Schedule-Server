@@ -21,7 +21,6 @@ public class JwtProvider {
 
     private final AppProperties appProperties;
 
-    //토큰 생성
     public String generateToken(User user, JwtExpirationEnums expire) {
         Date now = new Date();
         List<String> scope = new ArrayList<>();
@@ -42,31 +41,17 @@ public class JwtProvider {
     }
 
     public Jws<Claims> getClaims(String token) {
-        try {
-            return Jwts.parser()
-                    .setSigningKey(appProperties.getOauth().getTokenSigningKey())
-                    .parseClaimsJws(token);
-        } catch (Exception e) {
-            return null;
-        }
+        return Jwts.parser()
+                .setSigningKey(appProperties.getOauth().getTokenSigningKey())
+                .parseClaimsJws(token);
     }
 
-    public String getUserId(String token) {
-        return String.valueOf(getClaims(token).getBody().get("user_name"));
-    }
-
-    //토큰 유효성 체크
     public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = getClaims(token);
-            if (claims != null) {
-                return !claims.getBody().getExpiration().before(new Date());
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            return false;
+        Jws<Claims> claims = getClaims(token);
+        if (claims != null) {
+            return !claims.getBody().getExpiration().before(new Date());
         }
+        return false;
     }
 
     public long getRemainMilliSeconds(String token) {

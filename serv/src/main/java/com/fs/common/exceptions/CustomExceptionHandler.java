@@ -17,7 +17,7 @@ public class CustomExceptionHandler {
     private final LogErrorRepository logErrorRepository;
 
     private static final List<Class<?>> IGNORE_EXCEPTION = List.of(
-        NotFoundException.class
+        NotFoundException.class, NotMatchedException.class
     );
 
     @ExceptionHandler(Exception.class)

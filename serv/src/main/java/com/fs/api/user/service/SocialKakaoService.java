@@ -4,6 +4,7 @@ import com.fs.api.auth.dto.TokenDto;
 import com.fs.api.auth.util.TokenProvider;
 import com.fs.api.user.domain.User;
 import com.fs.api.user.dto.KakaoDto;
+import com.fs.common.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -28,24 +29,21 @@ public class SocialKakaoService implements SocialService {
 
     @Override
     public TokenDto.Token login(String code) {
-        //1. 카카오 액세스 토큰발급
-        String kakaoToken = getKakaoToken(code).block();
-        //2. 카카오 유저정보 확인
-        Optional<KakaoDto.Auth> auth = getKakaoAuth(kakaoToken).blockOptional();
+        Optional<KakaoDto.Auth> auth = getKakaoAuth(getKakaoToken(code));
         if (auth.isPresent()) {
-            //3. 회원가입이력 확인
+            //1. 회원가입이력 확인
             User user = userService.createOrFindByUser(auth.get());
-            //4. 서비스 토큰 발급
+            //2. 서비스 토큰 발급
             return tokenProvider.login(TokenDto.Login.builder()
                             .userId(user.getUserId())
                             .password(auth.get().getId() + auth.get().getConnected_at())
                     .build());
         }
-        throw new RuntimeException();
+        throw new BadRequestException("kakao");
     }
 
 
-    private Mono<String> getKakaoToken(String code) {
+    private String getKakaoToken(String code) {
         UriComponents url = UriComponentsBuilder.fromUriString(KAKAO_AUTH_URL)
                 .path("/oauth/token")
                 .queryParam("grant_type","authorization_code")
@@ -59,10 +57,11 @@ public class SocialKakaoService implements SocialService {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .retrieve()
                 .bodyToMono(KakaoDto.AccessToken.class)
-                .map(KakaoDto.AccessToken::getAccess_token);
+                .map(KakaoDto.AccessToken::getAccess_token)
+                .block();
     }
 
-    private Mono<KakaoDto.Auth> getKakaoAuth(String token) {
+    private Optional<KakaoDto.Auth> getKakaoAuth(String token) {
         UriComponents url = UriComponentsBuilder.fromUriString(KAKAO_API_URL)
                 .path("/v2/user/me")
                 .build();
@@ -71,7 +70,8 @@ public class SocialKakaoService implements SocialService {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .bodyToMono(KakaoDto.Auth.class);
+                .bodyToMono(KakaoDto.Auth.class)
+                .blockOptional();
     }
 
 }
