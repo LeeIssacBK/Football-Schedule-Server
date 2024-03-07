@@ -4,6 +4,7 @@ import com.fs.api.auth.dto.TokenDto;
 import com.fs.api.auth.util.TokenProvider;
 import com.fs.api.user.domain.User;
 import com.fs.api.user.dto.KakaoDto;
+import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,7 @@ public class SocialKakaoService implements SocialService {
 
 
     private String getKakaoToken(String code) {
-        UriComponents url = UriComponentsBuilder.fromUriString(KAKAO_AUTH_URL)
+        UriComponents url = UriComponentsBuilder.fromUriString(URL.KAKAO_AUTH.getValue())
                 .path("/oauth/token")
                 .queryParam("grant_type","authorization_code")
                 .queryParam("client_id","be34591b9514798eec7010a400ecca1a")
@@ -62,7 +63,7 @@ public class SocialKakaoService implements SocialService {
     }
 
     private Optional<KakaoDto.Auth> getKakaoAuth(String token) {
-        UriComponents url = UriComponentsBuilder.fromUriString(KAKAO_API_URL)
+        UriComponents url = UriComponentsBuilder.fromUriString(URL.KAKAO_API.getValue())
                 .path("/v2/user/me")
                 .build();
         return webClient.post()

@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             headerAuth = headerAuth.substring(7);
         }
-        return Optional.of(headerAuth);
+        return Optional.ofNullable(headerAuth);
     }
 
     private void validateAccessToken(String accessToken) {

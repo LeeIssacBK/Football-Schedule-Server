@@ -7,6 +7,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableScheduling
 @EnableCaching
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
