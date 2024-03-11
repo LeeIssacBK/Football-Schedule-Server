@@ -1,33 +1,21 @@
 package com.fs.api.football.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-public class CountryDto {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class CountryDto extends ApiResponse {
+
+    private List<CountryResponse> response;
 
     @Data
-    public static class Response {
-        private String get;
-        private List<String> parameters;
-        private List<String> errors;
-        private int results;
-        private Paging paging;
-        private List<ResponseData> response;
-    }
-
-    @Data
-    public static class ResponseData {
+    public static class CountryResponse {
         private String code;
         private String name;
         private String flag;
     }
-
-    @Data
-    public static class Paging {
-        private int current;
-        private int total;
-    }
-
 
 }
