@@ -1,7 +1,7 @@
 package com.fs.batch;
 
 import com.fs.api.football.service.CountryService;
-import com.fs.api.football.service.SeasonService;
+import com.fs.api.football.service.LeagueService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Scheduler {
 
     private final CountryService countryService;
-    private final SeasonService seasonService;
+    private final LeagueService leagueService;
 
     //@Scheduled(cron = "0 0 0 * * *")
     @GetMapping("/country")
@@ -25,9 +25,9 @@ public class Scheduler {
         countryService.update();
     }
 
-    @GetMapping("/season")
+    @GetMapping("/league")
     void updateSeason() {
-        seasonService.update();
+        leagueService.update();
     }
 
 }
