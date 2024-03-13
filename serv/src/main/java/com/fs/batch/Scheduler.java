@@ -1,6 +1,7 @@
 package com.fs.batch;
 
 import com.fs.api.football.service.CountryService;
+import com.fs.api.football.service.FixtureService;
 import com.fs.api.football.service.LeagueService;
 import com.fs.api.football.service.TeamService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ public class Scheduler {
     private final CountryService countryService;
     private final LeagueService leagueService;
     private final TeamService teamService;
+    private final FixtureService fixtureService;
 
     //@Scheduled(cron = "0 0 0 * * *")
     @GetMapping("/country")
@@ -38,5 +40,9 @@ public class Scheduler {
         teamService.update(leagueId);
     }
 
+    @GetMapping("/fixture")
+    void updateFixture(@RequestParam long leagueId) {
+        fixtureService.update(leagueId);
+    }
 
 }

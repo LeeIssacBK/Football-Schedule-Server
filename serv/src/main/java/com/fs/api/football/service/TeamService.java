@@ -77,7 +77,6 @@ public class TeamService {
                         }
                     });
             }, error -> {
-                    error.printStackTrace();
                 throw new BadRequestException(error.getMessage());
         });
     }
