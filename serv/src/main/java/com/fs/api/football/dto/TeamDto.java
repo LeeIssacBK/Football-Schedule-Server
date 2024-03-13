@@ -19,7 +19,7 @@ public class TeamDto extends ApiResponse {
 
     @Data
     public static class Team {
-        private int id;
+        private long id;
         private String name;
         private String code;
         private String country;

@@ -4,7 +4,13 @@ import com.fs.configs.jpa.base.BaseDomain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class Team extends BaseDomain {
 
@@ -16,7 +22,7 @@ public class Team extends BaseDomain {
     private long apiId;
     private String name;
     private String code;
-    private int foundedYear;
+    private int founded;
     private boolean national;
     private String logo;
     private String stadium;

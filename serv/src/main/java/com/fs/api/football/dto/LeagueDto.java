@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class LeagueDto extends ApiResponse {
 
-    List<Response> response;
+    private List<Response> response;
 
     @Data
     public static class Response {
@@ -20,7 +20,7 @@ public class LeagueDto extends ApiResponse {
 
     @Data
     public static class League {
-        private int id;
+        private long id;
         private String name;
         private String type;
         private String logo;

@@ -8,7 +8,7 @@ import java.util.List;
 public class ApiResponse {
 
     private String get;
-    private List<String> parameters;
+//    private List<?> parameters;
     private List<String> errors;
     private int results;
     private Paging paging;

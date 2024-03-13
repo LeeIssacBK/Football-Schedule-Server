@@ -44,7 +44,7 @@ public class LeagueService {
                             LeagueDto.League leagueResponse = response.getLeague();
                             LeagueDto.Country countryResponse = response.getCountry();
                             List<LeagueDto.Season> seasonsResponse = response.getSeasons();
-                            League league = leagueRepository.findByApiId(response.getLeague().getId())
+                            League league = leagueRepository.findByApiId(leagueResponse.getId())
                                     .or(() -> Optional.of(leagueRepository.save(League.builder()
                                             .apiId(leagueResponse.getId())
                                             .name(leagueResponse.getName())
@@ -64,7 +64,7 @@ public class LeagueService {
                                         .build());
                             });
                         } catch (Exception e) {
-                            log.error("error leagues ::: " + response.getLeague().getId() + ":" + response.getLeague().getName());
+                            log.error("error league ::: " + response.getLeague().getId() + ":" + response.getLeague().getName());
                             log.error(e.getMessage());
                         }
                     });
