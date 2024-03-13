@@ -14,7 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +29,6 @@ public class LeagueService {
 
     @Transactional
     public void update() {
-        List<String> errorLeagues = new ArrayList<>();
         UriComponents url = UriComponentsBuilder.fromUriString(URL.FOOTBALL_API.getValue())
                 .path("/leagues")
                 .build();
@@ -52,7 +50,7 @@ public class LeagueService {
                                             .name(leagueResponse.getName())
                                             .type(leagueResponse.getType().equals("Cup") ? League.Type.CUP : League.Type.LEAGUE)
                                             .logo(leagueResponse.getLogo())
-                                            .country(countryRepository.findByCode(countryResponse.getCode())
+                                            .country(countryRepository.findByCodeAndName(countryResponse.getCode(), countryResponse.getName())
                                                     .orElse(countryRepository.getByName("World")))
                                             .build()))).get();
                             seasonRepository.deleteAllByLeague(league);
@@ -66,13 +64,13 @@ public class LeagueService {
                                         .build());
                             });
                         } catch (Exception e) {
-                            errorLeagues.add(response.getLeague().getName());
+                            log.error("error leagues ::: " + response.getLeague().getId() + ":" + response.getLeague().getName());
+                            log.error(e.getMessage());
                         }
                     });
                 }, error -> {
                     throw new BadRequestException(error.getMessage());
                 });
-        log.error("error leagues ::: " + errorLeagues.toString());
     }
 
 
