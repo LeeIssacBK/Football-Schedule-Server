@@ -1,21 +1,18 @@
 package com.fs.api.football.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LeagueDto extends ApiResponse {
 
-    List<LeagueResponse> response;
+    List<Response> response;
 
     @Data
-    public static class LeagueResponse {
+    public static class Response {
         private League league;
         private Country country;
         private List<Season> seasons;
@@ -39,9 +36,7 @@ public class LeagueDto extends ApiResponse {
     @Data
     public static class Season {
         private int year;
-//        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private String start;
-//        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private String end;
         private boolean current;
         private Coverage coverage;

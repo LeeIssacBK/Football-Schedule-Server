@@ -9,10 +9,10 @@ import java.util.List;
 @Data
 public class CountryDto extends ApiResponse {
 
-    private List<CountryResponse> response;
+    private List<Response> response;
 
     @Data
-    public static class CountryResponse {
+    public static class Response {
         private String code;
         private String name;
         private String flag;

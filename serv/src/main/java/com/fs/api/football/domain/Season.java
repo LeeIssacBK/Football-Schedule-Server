@@ -24,6 +24,4 @@ public class Season extends BaseDomain {
     private LocalDate end;
     private boolean current;
 
-
-
 }
