@@ -72,7 +72,7 @@ public class TeamService {
                                         .build());
                             });
                         } catch (Exception e) {
-                            log.error("error team ::: " + response.getTeam().getId() + ":" + response.getTeam().getName());
+                            log.error("error team ::: " + teamResponse.getId() + ":" + teamResponse.getName());
                             log.error(e.getMessage());
                         }
                     });
