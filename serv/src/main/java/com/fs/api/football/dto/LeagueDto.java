@@ -63,4 +63,9 @@ public class LeagueDto extends ApiResponse {
         private boolean statistics_players;
     }
 
+    @Data
+    public static class AppResponse {
+
+    }
+
 }

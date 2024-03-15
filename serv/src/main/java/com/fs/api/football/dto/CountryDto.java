@@ -18,4 +18,12 @@ public class CountryDto extends ApiResponse {
         private String flag;
     }
 
+    @Data
+    public static class AppResponse {
+        private String code;
+        private String name;
+        private String krName;
+        private String flag;
+    }
+
 }

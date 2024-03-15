@@ -73,5 +73,10 @@ public class FixtureDto extends ApiResponse {
         private Integer away;
     }
 
+    @Data
+    public static class AppResponse {
+
+    }
+
 
 }

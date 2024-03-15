@@ -39,4 +39,9 @@ public class TeamDto extends ApiResponse {
         private String image;
     }
 
+    @Data
+    public static class AppResponse {
+
+    }
+
 }

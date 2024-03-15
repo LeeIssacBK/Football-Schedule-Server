@@ -16,6 +16,7 @@ public class Country extends BaseDomain {
 
     private String code;
     private String name;
+    private String krName;
     private String flag;
 
 }
