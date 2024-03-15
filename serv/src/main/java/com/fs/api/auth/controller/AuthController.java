@@ -35,11 +35,13 @@ public class AuthController {
         return socialService.login(code);
     }
 
+    @Operation(summary = "토큰연장")
     @PostMapping("/reissue")
     public ResponseEntity<TokenDto.Token> reissue(@RequestHeader("RefreshToken") String refreshToken){
         return ResponseEntity.ok(tokenProvider.reissue(refreshToken));
     }
 
+    @Operation(summary = "내 정보")
     @Secured({"ROLE_USER"})
     @GetMapping("/me")
     public ResponseEntity<?> getMe(@UserPrincipal UserDto.Simple user) {
