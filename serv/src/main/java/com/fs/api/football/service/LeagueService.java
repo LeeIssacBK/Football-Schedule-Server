@@ -2,8 +2,10 @@ package com.fs.api.football.service;
 
 import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.LeagueDto;
+import com.fs.api.football.dto.LeagueDtoMapper;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
+import com.fs.common.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,5 +76,9 @@ public class LeagueService {
                 });
     }
 
+
+    public List<LeagueDto.AppResponse> get(String countryCode) {
+       return LeagueDtoMapper.INSTANCE.toAppResponse(leagueRepository.findAllByCountryCode(countryCode).orElseThrow(() -> new NotFoundException("league")));
+    }
 
 }

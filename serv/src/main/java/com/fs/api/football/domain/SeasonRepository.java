@@ -8,6 +8,5 @@ import java.util.Optional;
 @Repository
 public interface SeasonRepository extends BaseRepository<Season> {
     void deleteAllByLeague(League league);
-
     Optional<Season> findByLeagueAndCurrentIsTrue(League league);
 }

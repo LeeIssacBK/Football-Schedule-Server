@@ -2,6 +2,7 @@ package com.fs.api.football.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.fs.api.football.domain.League.Type;
 
 import java.util.List;
 
@@ -65,6 +66,11 @@ public class LeagueDto extends ApiResponse {
 
     @Data
     public static class AppResponse {
+
+        private long apiId;
+        private String name;
+        private String logo;
+        private Type type;
 
     }
 

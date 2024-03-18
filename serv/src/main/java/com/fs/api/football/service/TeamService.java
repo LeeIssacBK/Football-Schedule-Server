@@ -2,6 +2,7 @@ package com.fs.api.football.service;
 
 import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.TeamDto;
+import com.fs.api.football.dto.TeamDtoMapper;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -79,6 +82,12 @@ public class TeamService {
             }, error -> {
                 throw new BadRequestException(error.getMessage());
         });
+    }
+
+    public List<TeamDto.AppResponse> get(long leagueId) {
+        League league = leagueRepository.findByApiId(leagueId).orElseThrow(() -> new NotFoundException("league"));
+        Season season = seasonRepository.findByLeagueAndCurrentIsTrue(league).orElseThrow(() -> new NotFoundException("season"));
+        return TeamDtoMapper.INSTANCE.toAppResponse(teamRepository.findAllByLeagueAndSeason(league, season).orElseThrow(() -> new NotFoundException("teams")));
     }
 
 }

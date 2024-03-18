@@ -41,7 +41,19 @@ public class TeamDto extends ApiResponse {
 
     @Data
     public static class AppResponse {
-
+        private LeagueDto.AppResponse league;
+        private SeasonDto.AppResponse season;
+        private long apiId;
+        private String name;
+        private String code;
+        private int founded;
+        private boolean national;
+        private String logo;
+        private String stadium;
+        private String address;
+        private String city;
+        private int capacity;
+        private String stadiumImage;
     }
 
 }
