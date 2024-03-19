@@ -2,6 +2,7 @@ package com.fs.api.football.service;
 
 import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.FixtureDto;
+import com.fs.api.football.dto.FixtureDtoMapper;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
@@ -13,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -83,6 +84,11 @@ public class FixtureService {
                 }, error -> {
                     throw new BadRequestException(error.getMessage());
                 });
+    }
+
+    public List<FixtureDto.AppResponse> get(long teamId) {
+        Team team = teamRepository.findByApiId(teamId).orElseThrow(() -> new NotFoundException("team"));
+        return FixtureDtoMapper.INSTANCE.toAppResponse(fixtureRepository.findAllByHomeOrAway(team, team).orElseThrow(() -> new NotFoundException("fixture")));
     }
 
 }

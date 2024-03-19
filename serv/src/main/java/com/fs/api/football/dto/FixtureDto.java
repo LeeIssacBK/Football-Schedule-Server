@@ -3,7 +3,6 @@ package com.fs.api.football.dto;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -75,7 +74,16 @@ public class FixtureDto extends ApiResponse {
 
     @Data
     public static class AppResponse {
-
+        private String round;
+        private com.fs.api.football.domain.Fixture.Status status;
+        private String referee;
+        private LocalDateTime date;
+        private LeagueDto.AppResponse league;
+        private TeamDto.AppResponse home;
+        private TeamDto.AppResponse away;
+        private Integer homeGoal;
+        private Integer awayGoal;
+        private com.fs.api.football.domain.Fixture.MatchResult matchResult;
     }
 
 
