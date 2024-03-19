@@ -22,7 +22,6 @@ import java.util.List;
 public class FixtureService {
 
     private final WebClient webClient;
-    private final CountryRepository countryRepository;
     private final LeagueRepository leagueRepository;
     private final SeasonRepository seasonRepository;
     private final TeamRepository teamRepository;
