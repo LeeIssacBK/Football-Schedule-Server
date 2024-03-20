@@ -4,6 +4,7 @@ import com.fs.api.football.domain.Country;
 import com.fs.api.football.domain.CountryRepository;
 import com.fs.api.football.dto.CountryDto;
 import com.fs.api.football.dto.CountryDtoMapper;
+import com.fs.api.football.util.ApiProvider;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import jakarta.transaction.Transactional;
@@ -29,8 +30,7 @@ public class CountryService {
                 .build();
         webClient.get()
                 .uri(url.toUri())
-                .header("X-RapidAPI-Host", "api-football-v1.p.rapidapi.com")
-                .header("X-RapidAPI-Key", "81fe2c5be0msh192ce0f95db9856p1c396ejsn2af5c49a0a78")
+                .headers(ApiProvider.getHeader())
                 .retrieve()
                 .bodyToMono(CountryDto.class)
                 .subscribe(data -> {

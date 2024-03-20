@@ -5,6 +5,7 @@ import com.fs.api.football.domain.PlayerRepository;
 import com.fs.api.football.domain.Team;
 import com.fs.api.football.domain.TeamRepository;
 import com.fs.api.football.dto.PlayerDto;
+import com.fs.api.football.util.ApiProvider;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
@@ -38,8 +39,7 @@ public class PlayerService {
                 .build();
         webClient.get()
                 .uri(url.toUri())
-                .header("X-RapidAPI-Host", "api-football-v1.p.rapidapi.com")
-                .header("X-RapidAPI-Key", "81fe2c5be0msh192ce0f95db9856p1c396ejsn2af5c49a0a78")
+                .headers(ApiProvider.getHeader())
                 .retrieve()
                 .bodyToMono(PlayerDto.class)
                 .subscribe(data -> {
