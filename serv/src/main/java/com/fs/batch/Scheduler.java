@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "99. 스케쥴러 트리거")
+@Tag(name = "99. schedule trigger", description = "스케쥴러 테스트 트리거")
 @RequestMapping(path = "/api/schedule")
 @RestController
 public class Scheduler {

@@ -12,6 +12,11 @@ app:
     client-secret: geol-po!@#
     token-signing-key: ${app.oauth.client-secret}:${app.oauth.client-id}
 
+springdoc:
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+
 spring:
   batch:
     job:

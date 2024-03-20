@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "3. 국가")
+@Tag(name = "2. 국가", description = "국가정보")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class CountryController {
 
     private final CountryService countryService;
 
-    @Operation(summary = "국가")
+    @Operation(summary = "국가 정보를 불러온다")
     @GetMapping
     public List<CountryDto.AppResponse> get() {
         return countryService.get();

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "5. 팀")
+@Tag(name = "4. 팀", description = "팀 정보")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class TeamController {
 
     private final TeamService teamService;
 
-    @Operation(summary = "팀")
+    @Operation(summary = "리그 아이디를 통해 리그에 등록된 팀을 가져온다.")
     @GetMapping
     public List<TeamDto.AppResponse> get(@RequestParam long leagueId) {
         return teamService.get(leagueId);

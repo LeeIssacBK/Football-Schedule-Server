@@ -2,6 +2,7 @@ package com.fs.api.football.controller;
 
 import com.fs.api.football.dto.FixtureDto;
 import com.fs.api.football.service.FixtureService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "6. 경기일정")
+@Tag(name = "5. 경기일정", description = "경기일정 정보")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class FixtureController {
 
     private final FixtureService fixtureService;
 
+    @Operation(summary = "팀 아이디를 통해 현재 시즌 팀의 경기 정보를 가져온다.")
     @GetMapping
     public List<FixtureDto.AppResponse> get(@RequestParam long teamId) {
         return fixtureService.get(teamId);

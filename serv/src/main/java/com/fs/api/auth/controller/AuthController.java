@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "1. 인증")
+@Tag(name = "1. 인증", description = "로그인, 소셜, 토큰연장")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class AuthController {
         return tokenProvider.login(login);
     }
 
+    @Operation(summary = "카카오 로그인")
     @GetMapping("/kakao")
     public TokenDto.Token kakaoLogin(@RequestParam String code) {
         return socialService.login(code);
@@ -39,7 +40,7 @@ public class AuthController {
         return tokenProvider.reissue(refreshToken);
     }
 
-    @Operation(summary = "내 정보")
+    @Operation(summary = "내 정보 보기")
     @Secured({"ROLE_USER"})
     @GetMapping("/me")
     public UserDto.Simple getMe(@UserPrincipal UserDto.Simple user) {

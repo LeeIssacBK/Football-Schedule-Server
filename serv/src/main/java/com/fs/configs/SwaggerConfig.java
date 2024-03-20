@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
     info = @Info(title = "Football Schedule API 명세서",
-        description = "좋아하는 팀과 선수를 구독하고 축구팀을 관리하는 앱 서버 입니다.",
+        description = "좋아하는 팀과 선수를 구독 알림을 받을수있는 앱 서버 입니다.",
         version = "v1"))
 @Configuration
 public class SwaggerConfig {
