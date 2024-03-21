@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "6. 구독", description = "구독, 구독취소")
 @Secured({"ROLE_USER"})
 @Slf4j
@@ -25,7 +27,7 @@ public class SubscribeController {
 
     @Operation(summary = "구독 목록")
     @GetMapping("/")
-    public ResponseEntity<?> get(@UserPrincipal UserDto.Simple user, @RequestParam SubscribeType type) {
+    public ResponseEntity<List<SubscribeDto.Response>> get(@UserPrincipal UserDto.Simple user, @RequestParam SubscribeType type) {
         return ResponseEntity.ok(subscribeService.get(user, type));
     }
 
