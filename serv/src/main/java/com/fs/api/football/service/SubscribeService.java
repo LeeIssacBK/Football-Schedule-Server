@@ -7,10 +7,10 @@ import com.fs.api.user.dto.UserDto;
 import com.fs.api.user.repository.UserRepository;
 import com.fs.common.enums.SubscribeType;
 import com.fs.common.exceptions.NotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -64,6 +64,7 @@ public class SubscribeService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<SubscribeDto.Response> get(UserDto.Simple user, SubscribeType type) {
         return SubscribeDtoMapper.INSTANCE.toResponses(
                 subscribeRepository.findAllByTypeAndUserUserId(type, user.getUserId())
