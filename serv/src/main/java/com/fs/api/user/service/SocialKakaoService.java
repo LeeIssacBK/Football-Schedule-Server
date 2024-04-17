@@ -29,8 +29,8 @@ public class SocialKakaoService implements SocialService {
     private final TokenProvider tokenProvider;
 
     @Override
-    public TokenDto.Token login(String code) {
-        Optional<KakaoDto.Auth> auth = getKakaoAuth(getKakaoToken(code));
+    public TokenDto.Token login(String token) {
+        Optional<KakaoDto.Auth> auth = getKakaoAuth(token);
         if (auth.isPresent()) {
             //1. 회원가입이력 확인
             User user = userService.createOrFindByUser(auth.get());

@@ -28,10 +28,16 @@ public class AuthController {
         return tokenProvider.login(login);
     }
 
-    @Operation(summary = "카카오 로그인")
+//    @Operation(summary = "web 카카오 로그인")
+//    @GetMapping("/kakao")
+//    public TokenDto.Token kakaoLogin(@RequestParam String code) {
+//        return socialService.login(code);
+//    }
+
+    @Operation(summary = "flutter 카카오 로그인")
     @GetMapping("/kakao")
-    public TokenDto.Token kakaoLogin(@RequestParam String code) {
-        return socialService.login(code);
+    public TokenDto.Token flutterKakaoLogin(@RequestParam String token) {
+        return socialService.login(token);
     }
 
     @Operation(summary = "토큰연장")
