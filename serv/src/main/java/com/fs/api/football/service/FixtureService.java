@@ -59,6 +59,7 @@ public class FixtureService {
                                 fixture.setHomeGoal(goalsResponse.getHome());
                                 fixture.setAwayGoal(goalsResponse.getAway());
                                 fixture.setMatchResult(Fixture.MatchResult.parse(teamsResponse));
+                                fixtureRepository.save(fixture);
                             }, () -> {
                                 fixtureRepository.save(Fixture.builder()
                                                 .apiId(fixtureResponse.getId())
