@@ -1,5 +1,6 @@
 package com.fs.api.football.dto;
 
+import com.fs.common.enums.Continent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,6 +25,7 @@ public class CountryDto extends ApiResponse {
         private String name;
         private String krName;
         private String flag;
+        private Continent continent;
     }
 
 }
