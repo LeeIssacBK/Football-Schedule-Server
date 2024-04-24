@@ -47,7 +47,7 @@ public class CountryService {
     }
 
     public List<CountryDto.AppResponse> get() {
-        return CountryDtoMapper.INSTANCE.toAppResponse(countryRepository.findAllByFlagIsNotNullAndKrNameIsNotNull());
+        return CountryDtoMapper.INSTANCE.toAppResponse(countryRepository.findAllByFlagIsNotNullAndKrNameIsNotNullOrderByKrNameAsc());
     }
 
 }

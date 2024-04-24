@@ -12,5 +12,5 @@ public interface CountryRepository extends BaseRepository<Country> {
     Country getByName(String name);
     Optional<Country> findByCodeAndName(String code, String name);
 
-    List<Country> findAllByFlagIsNotNullAndKrNameIsNotNull();
+    List<Country> findAllByFlagIsNotNullAndKrNameIsNotNullOrderByKrNameAsc();
 }
