@@ -2,11 +2,13 @@ package com.fs.api.football.service;
 
 import com.fs.api.football.domain.Country;
 import com.fs.api.football.domain.CountryRepository;
+import com.fs.api.football.domain.QCountry;
 import com.fs.api.football.dto.CountryDto;
 import com.fs.api.football.dto.CountryDtoMapper;
 import com.fs.api.football.util.ApiProvider;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static com.fs.api.football.domain.QCountry.country;
+import static com.fs.api.football.domain.QFixture.fixture;
+import static com.fs.api.football.domain.QLeague.league;
+
 @RequiredArgsConstructor
 @Service
 public class CountryService {
 
     private final WebClient webClient;
     private final CountryRepository countryRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Transactional
     public void update() {
@@ -48,6 +55,13 @@ public class CountryService {
 
     public List<CountryDto.AppResponse> get() {
         return CountryDtoMapper.INSTANCE.toAppResponse(countryRepository.findAllByFlagIsNotNullAndKrNameIsNotNullOrderByKrNameAsc());
+    }
+
+    public List<CountryDto.AppResponse> getWithFixture() {
+        return CountryDtoMapper.INSTANCE.toAppResponse(queryFactory.selectDistinct(league.country)
+                .from(fixture)
+                .where(league.isNotNull())
+                .fetch());
     }
 
 }

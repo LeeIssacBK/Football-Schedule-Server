@@ -21,10 +21,10 @@ public class CountryController {
 
     private final CountryService countryService;
 
-    @Operation(summary = "국가 정보를 불러온다")
+    @Operation(summary = "경기정보를 가지고 있는 국가 정보만 불러온다")
     @GetMapping
     public List<CountryDto.AppResponse> get() {
-        return countryService.get();
+        return countryService.getWithFixture();
     }
 
 }
