@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum JwtExpirationEnums {
-    ACCESS_TOKEN_EXPIRATION_TIME("30 minutes", 1000L * 60 * 30),
-    REFRESH_TOKEN_EXPIRATION_TIME("2 hours", 1000L * 60 * 60 * 2);
+    ACCESS_TOKEN_EXPIRATION_TIME("1 day", 1000L * 60 * 60 * 24),
+    REFRESH_TOKEN_EXPIRATION_TIME("7 days", 1000L * 60 * 60 * 24 * 7);
     private String description;
     private long value;
 }
