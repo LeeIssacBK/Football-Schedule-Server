@@ -25,7 +25,7 @@ public class LeagueController {
     @Operation(summary = "국가코드를 입력받아 해당 국가의 리그정보를 가져온다.")
     @GetMapping
     public List<LeagueDto.AppResponse> get(@RequestParam String countryCode) {
-        return leagueService.get(countryCode);
+        return leagueService.getWithFixture(countryCode);
     }
 
 

@@ -7,6 +7,7 @@ import com.fs.api.football.util.ApiProvider;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import static com.fs.api.football.domain.QCountry.country;
+import static com.fs.api.football.domain.QFixture.fixture;
+import static com.fs.api.football.domain.QLeague.league;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -29,6 +34,7 @@ public class LeagueService {
     private final CountryRepository countryRepository;
     private final LeagueRepository leagueRepository;
     private final SeasonRepository seasonRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Transactional
     public void update() {
@@ -75,9 +81,17 @@ public class LeagueService {
                 });
     }
 
-
     public List<LeagueDto.AppResponse> get(String countryCode) {
        return LeagueDtoMapper.INSTANCE.toAppResponse(leagueRepository.findAllByCountryCode(countryCode).orElseThrow(() -> new NotFoundException("league")));
+    }
+
+    public List<LeagueDto.AppResponse> getWithFixture(String countryCode) {
+        return LeagueDtoMapper.INSTANCE.toAppResponse(
+                queryFactory.select(league)
+                        .from(fixture)
+                        .where(fixture.league.country.code.eq(countryCode))
+                        .fetch()
+        );
     }
 
 }
