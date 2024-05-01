@@ -6,6 +6,7 @@ import com.fs.api.football.domain.QCountry;
 import com.fs.api.football.dto.CountryDto;
 import com.fs.api.football.dto.CountryDtoMapper;
 import com.fs.api.football.util.ApiProvider;
+import com.fs.common.enums.Continent;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -57,10 +58,11 @@ public class CountryService {
         return CountryDtoMapper.INSTANCE.toAppResponse(countryRepository.findAllByFlagIsNotNullAndKrNameIsNotNullOrderByKrNameAsc());
     }
 
-    public List<CountryDto.AppResponse> getWithFixture() {
+    public List<CountryDto.AppResponse> getWithFixture(Continent continent) {
         return CountryDtoMapper.INSTANCE.toAppResponse(queryFactory.selectDistinct(league.country)
                 .from(fixture)
-                .where(league.isNotNull())
+                .where(league.isNotNull()
+                .and(league.country.continent.eq(continent)))
                 .fetch());
     }
 

@@ -33,7 +33,7 @@ public class SubscribeController {
 
     @Operation(summary = "구독")
     @PostMapping("/")
-    public ResponseEntity<?> subscribe(@UserPrincipal UserDto.Simple user, SubscribeDto.Request request) {
+    public ResponseEntity<?> subscribe(@UserPrincipal UserDto.Simple user, @RequestBody SubscribeDto.Request request) {
         subscribeService.subscribe(user, request);
         return ResponseEntity.ok().build();
     }
