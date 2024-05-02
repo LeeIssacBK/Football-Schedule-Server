@@ -2,6 +2,8 @@ package com.fs.api.football.controller;
 
 import com.fs.api.football.dto.FixtureDto;
 import com.fs.api.football.service.FixtureService;
+import com.fs.api.user.dto.UserDto;
+import com.fs.configs.security.user.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,12 @@ public class FixtureController {
     @GetMapping
     public List<FixtureDto.AppResponse> get(@RequestParam long teamId) {
         return fixtureService.get(teamId);
+    }
+
+    @Operation(summary = "유저 아이디를 통해 구독한 팀들의 경기 정보를 가져온다.")
+    @GetMapping("/subscribe")
+    public List<List<FixtureDto.AppResponse>> get(@UserPrincipal UserDto.Simple user) {
+        return fixtureService.get(user);
     }
 
 }

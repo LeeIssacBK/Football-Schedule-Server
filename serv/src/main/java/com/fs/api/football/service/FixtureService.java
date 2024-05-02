@@ -4,6 +4,8 @@ import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.FixtureDto;
 import com.fs.api.football.dto.FixtureDtoMapper;
 import com.fs.api.football.util.ApiProvider;
+import com.fs.api.user.dto.UserDto;
+import com.fs.common.enums.SubscribeType;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
@@ -27,6 +29,7 @@ public class FixtureService {
     private final SeasonRepository seasonRepository;
     private final TeamRepository teamRepository;
     private final FixtureRepository fixtureRepository;
+    private final SubscribeRepository subscribeRepository;
 
     @Transactional
     public void update(long leagueId) {
@@ -89,6 +92,14 @@ public class FixtureService {
     public List<FixtureDto.AppResponse> get(long teamId) {
         Team team = teamRepository.findByApiId(teamId).orElseThrow(() -> new NotFoundException("team"));
         return FixtureDtoMapper.INSTANCE.toAppResponse(fixtureRepository.findAllByHomeOrAway(team, team).orElseThrow(() -> new NotFoundException("fixture")));
+    }
+
+    public List<List<FixtureDto.AppResponse>> get(UserDto.Simple user) {
+        List<Team> teams = subscribeRepository.findAllByTypeAndUserUserId(SubscribeType.TEAM, user.getUserId())
+                .orElseThrow(() -> new NotFoundException("subscribes"))
+                .stream().map(Subscribe::getTeam).toList();
+        return teams.stream().map(team -> FixtureDtoMapper.INSTANCE.toAppResponse(fixtureRepository.findAllByHomeOrAway(team, team)
+                .orElseThrow(() -> new NotFoundException("fixture")))).toList();
     }
 
 }
