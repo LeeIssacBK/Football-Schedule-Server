@@ -9,6 +9,7 @@ import com.fs.common.enums.SubscribeType;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
+import static com.fs.api.football.domain.QFixture.fixture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +36,7 @@ public class FixtureService {
     private final TeamRepository teamRepository;
     private final FixtureRepository fixtureRepository;
     private final SubscribeRepository subscribeRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Transactional
     public void update(long leagueId) {
@@ -94,12 +101,23 @@ public class FixtureService {
         return FixtureDtoMapper.INSTANCE.toAppResponse(fixtureRepository.findAllByHomeOrAway(team, team).orElseThrow(() -> new NotFoundException("fixture")));
     }
 
-    public List<List<FixtureDto.AppResponse>> get(UserDto.Simple user) {
+    public List<FixtureDto.AppResponse> get(UserDto.Simple user) {
+        List<FixtureDto.AppResponse> response = new ArrayList<>();
         List<Team> teams = subscribeRepository.findAllByTypeAndUserUserId(SubscribeType.TEAM, user.getUserId())
                 .orElseThrow(() -> new NotFoundException("subscribes"))
                 .stream().map(Subscribe::getTeam).toList();
-        return teams.stream().map(team -> FixtureDtoMapper.INSTANCE.toAppResponse(fixtureRepository.findAllByHomeOrAway(team, team)
-                .orElseThrow(() -> new NotFoundException("fixture")))).toList();
+        teams.forEach(team -> {
+            response.addAll(FixtureDtoMapper.INSTANCE.toAppResponse(
+                    Optional.of(queryFactory.selectFrom(fixture)
+                                    .where(fixture.home.eq(team).or(fixture.away.eq(team))
+                                            .and(fixture.status.eq(Fixture.Status.NS)))
+                                    .limit(5)
+                                    .orderBy(fixture.date.asc())
+                                    .fetch())
+                            .orElseThrow(() -> new NotFoundException("fixture"))
+            ));
+        });
+        return response.stream().sorted(Comparator.comparing(FixtureDto.AppResponse::getDate)).toList();
     }
 
 }

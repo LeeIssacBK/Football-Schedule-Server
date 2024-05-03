@@ -32,7 +32,7 @@ public class FixtureController {
 
     @Operation(summary = "유저 아이디를 통해 구독한 팀들의 경기 정보를 가져온다.")
     @GetMapping("/subscribe")
-    public List<List<FixtureDto.AppResponse>> get(@UserPrincipal UserDto.Simple user) {
+    public List<FixtureDto.AppResponse> get(@UserPrincipal UserDto.Simple user) {
         return fixtureService.get(user);
     }
 

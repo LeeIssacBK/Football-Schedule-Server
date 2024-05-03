@@ -21,7 +21,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import static com.fs.api.football.domain.QCountry.country;
 import static com.fs.api.football.domain.QFixture.fixture;
 import static com.fs.api.football.domain.QLeague.league;
 

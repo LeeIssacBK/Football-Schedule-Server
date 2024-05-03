@@ -13,4 +13,6 @@ public interface FixtureRepository extends BaseRepository<Fixture> {
 
     Optional<List<Fixture>> findAllByHomeOrAway(Team home, Team away);
 
+    Optional<List<Fixture>> findAllByHomeOrAwayAndStatus(Team home, Team away, Fixture.Status status);
+
 }
