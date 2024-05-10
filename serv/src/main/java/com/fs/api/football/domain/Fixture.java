@@ -39,7 +39,7 @@ public class Fixture extends BaseDomain {
             if (isHomeWin == null && isAwayWin == null) {
                 return MatchResult.DRAW;
             }
-            if (isHomeWin) {
+            if (Boolean.TRUE.equals(isHomeWin)) {
                 return MatchResult.HOME_WIN;
             }
             if (isAwayWin) {
