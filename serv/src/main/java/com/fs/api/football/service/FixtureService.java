@@ -103,7 +103,7 @@ public class FixtureService {
 
     public List<FixtureDto.AppResponse> get(UserDto.Simple user) {
         List<FixtureDto.AppResponse> response = new ArrayList<>();
-        List<Team> teams = subscribeRepository.findAllByTypeAndUserUserId(SubscribeType.TEAM, user.getUserId())
+        List<Team> teams = subscribeRepository.findAllByTypeAndUserUserIdAndIsDeleteFalse(SubscribeType.TEAM, user.getUserId())
                 .orElseThrow(() -> new NotFoundException("subscribes"))
                 .stream().map(Subscribe::getTeam).toList();
         teams.forEach(team -> {

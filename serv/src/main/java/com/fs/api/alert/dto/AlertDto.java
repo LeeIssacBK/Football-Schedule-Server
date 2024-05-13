@@ -9,7 +9,7 @@ public class AlertDto {
     @Data
     public static class Response {
 
-        private FixtureDto.AppResponse appResponse;
+        private FixtureDto.AppResponse fixture;
 
         private boolean isSend;
 

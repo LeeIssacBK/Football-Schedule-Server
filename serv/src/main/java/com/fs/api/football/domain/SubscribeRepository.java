@@ -12,6 +12,6 @@ public interface SubscribeRepository extends BaseRepository<Subscribe> {
 
     Optional<Subscribe> findByTeamAndUserUserId(Team team, String userId);
     Optional<Subscribe> findByPlayerAndUserUserId(Player player, String userId);
-    Optional<List<Subscribe>> findAllByTypeAndUserUserId(SubscribeType type, String userId);
+    Optional<List<Subscribe>> findAllByTypeAndUserUserIdAndIsDeleteFalse(SubscribeType type, String userId);
 
 }

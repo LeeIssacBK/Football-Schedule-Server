@@ -9,6 +9,7 @@ import com.fs.common.enums.SubscribeType;
 import com.fs.common.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,21 +54,24 @@ public class SubscribeService {
     }
 
     @Transactional
-    public void unSubscribe(UserDto.Simple user, SubscribeDto.Request request) {
+    public ResponseEntity<?> unSubscribe(UserDto.Simple user, SubscribeDto.Request request) {
         if (SubscribeType.TEAM.equals(request.getType())) {
             Team team = teamRepository.findByApiId(request.getApiId()).orElseThrow(() -> new NotFoundException("team"));
-            subscribeRepository.findByTeamAndUserUserId(team, user.getUserId()).ifPresent(subscribe -> subscribe.setDelete(true));
+            subscribeRepository.findByTeamAndUserUserId(team, user.getUserId())
+                    .ifPresent(subscribe -> subscribe.setDelete(true));
         }
         if (SubscribeType.PLAYER.equals(request.getType())) {
             Player player = playerRepository.findByApiId(request.getApiId()).orElseThrow(() -> new NotFoundException("player"));
-            subscribeRepository.findByPlayerAndUserUserId(player, user.getUserId()).ifPresent(subscribe -> subscribe.setDelete(true));
+            subscribeRepository.findByPlayerAndUserUserId(player, user.getUserId())
+                    .ifPresent(subscribe -> subscribe.setDelete(true));
         }
+        return ResponseEntity.ok().build();
     }
 
     @Transactional(readOnly = true)
     public List<SubscribeDto.Response> get(UserDto.Simple user, SubscribeType type) {
         return SubscribeDtoMapper.INSTANCE.toResponses(
-                subscribeRepository.findAllByTypeAndUserUserId(type, user.getUserId())
+                subscribeRepository.findAllByTypeAndUserUserIdAndIsDeleteFalse(type, user.getUserId())
                         .orElseThrow(() -> new NotFoundException("subscribe")));
     }
 

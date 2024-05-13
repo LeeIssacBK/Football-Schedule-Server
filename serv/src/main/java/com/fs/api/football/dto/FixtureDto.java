@@ -74,6 +74,7 @@ public class FixtureDto extends ApiResponse {
 
     @Data
     public static class AppResponse {
+        private long apiId;
         private String round;
         private com.fs.api.football.domain.Fixture.Status status;
         private String referee;

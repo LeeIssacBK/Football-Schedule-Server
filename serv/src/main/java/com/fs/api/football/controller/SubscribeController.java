@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +40,9 @@ public class SubscribeController {
     }
 
     @Operation(summary = "구독취소")
-    @DeleteMapping("/")
-    public ResponseEntity<?> unSubscribe(@UserPrincipal UserDto.Simple user, SubscribeDto.Request request) {
-        subscribeService.unSubscribe(user, request);
-        return ResponseEntity.ok().build();
+    @DeleteMapping
+    public ResponseEntity<?> unSubscribe(@UserPrincipal UserDto.Simple user, @RequestBody SubscribeDto.Request request) {
+        return subscribeService.unSubscribe(user, request);
     }
 
 }
