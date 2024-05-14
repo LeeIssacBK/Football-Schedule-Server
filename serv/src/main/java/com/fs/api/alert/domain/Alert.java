@@ -6,9 +6,11 @@ import com.fs.configs.jpa.base.BaseDomain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

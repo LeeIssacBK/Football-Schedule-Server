@@ -85,6 +85,7 @@ public class FixtureDto extends ApiResponse {
         private Integer homeGoal;
         private Integer awayGoal;
         private com.fs.api.football.domain.Fixture.MatchResult matchResult;
+        private boolean isAlert = false;
     }
 
 

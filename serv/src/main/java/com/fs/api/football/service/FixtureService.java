@@ -1,5 +1,6 @@
 package com.fs.api.football.service;
 
+import com.fs.api.alert.domain.AlertRepository;
 import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.FixtureDto;
 import com.fs.api.football.dto.FixtureDtoMapper;
@@ -36,6 +37,7 @@ public class FixtureService {
     private final TeamRepository teamRepository;
     private final FixtureRepository fixtureRepository;
     private final SubscribeRepository subscribeRepository;
+    private final AlertRepository alertRepository;
     private final JPAQueryFactory queryFactory;
 
     @Transactional
@@ -116,6 +118,14 @@ public class FixtureService {
                                     .fetch())
                             .orElseThrow(() -> new NotFoundException("fixture"))
             ));
+        });
+        alertRepository.findAllByToUserId(user.getUserId()).forEach(alert -> {
+            for (FixtureDto.AppResponse fixtureDto : response) {
+                if (fixtureDto.getApiId() == alert.getFixture().getApiId()) {
+                    fixtureDto.setAlert(true);
+                    break;
+                }
+            }
         });
         return response.stream().sorted(Comparator.comparing(FixtureDto.AppResponse::getDate)).toList();
     }
