@@ -19,6 +19,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -107,12 +110,15 @@ public class FixtureService {
         List<FixtureDto.AppResponse> response = new ArrayList<>();
         List<Team> teams = subscribeRepository.findAllByTypeAndUserUserIdAndIsDeleteFalse(SubscribeType.TEAM, user.getUserId())
                 .orElseThrow(() -> new NotFoundException("subscribes"))
-                .stream().map(Subscribe::getTeam).toList();
+                .stream().map(Subscribe
+                        ::getTeam).toList();
         teams.forEach(team -> {
             response.addAll(FixtureDtoMapper.INSTANCE.toAppResponse(
                     Optional.of(queryFactory.selectFrom(fixture)
                                     .where(fixture.home.eq(team).or(fixture.away.eq(team))
-                                            .and(fixture.status.eq(Fixture.Status.NS)))
+                                            .and(fixture.status.eq(Fixture.Status.NS))
+                                            .and(fixture.date.after(LocalDateTime.now(ZoneOffset.UTC)))
+                                    )
                                     .limit(5)
                                     .orderBy(fixture.date.asc())
                                     .fetch())

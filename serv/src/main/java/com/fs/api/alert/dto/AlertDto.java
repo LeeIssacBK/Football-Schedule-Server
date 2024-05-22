@@ -17,5 +17,16 @@ public class AlertDto {
 
     }
 
+    @Data
+    public static class Request {
+        private long fixtureId;
+        private Alert.AlertType alertType;
+        public void typeCheck() {
+            if (this.alertType == null) {
+                this.alertType = Alert.AlertType.BEFORE_30MINUTES;
+            }
+        }
+    }
+
 
 }

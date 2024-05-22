@@ -24,10 +24,12 @@ public class AlertService {
 
 
     @Transactional
-    public void saveAlert(UserDto.Simple user, long fixtureId) {
+    public void saveAlert(UserDto.Simple user, AlertDto.Request request) {
+        request.typeCheck();
         alertRepository.save(Alert.builder()
                         .to(userRepository.findByUserId(user.getUserId()).orElseThrow(() -> new NotFoundException("user")))
-                        .fixture(fixtureRepository.findByApiId(fixtureId).orElseThrow(() -> new NotFoundException("fixture")))
+                        .alertType(request.getAlertType())
+                        .fixture(fixtureRepository.findByApiId(request.getFixtureId()).orElseThrow(() -> new NotFoundException("fixture")))
                 .build());
     }
 

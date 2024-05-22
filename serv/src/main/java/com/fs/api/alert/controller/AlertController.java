@@ -32,8 +32,8 @@ public class AlertController {
 
     @Operation(summary = "fixture_id 를 통해 알람을 등록한다.")
     @PostMapping
-    public ResponseEntity<?> saveAlert(@UserPrincipal UserDto.Simple user, @RequestParam long fixtureId) {
-        alertService.saveAlert(user, fixtureId);
+    public ResponseEntity<?> saveAlert(@UserPrincipal UserDto.Simple user, @RequestBody AlertDto.Request request) {
+        alertService.saveAlert(user, request);
         return ResponseEntity.ok().build();
     }
 
