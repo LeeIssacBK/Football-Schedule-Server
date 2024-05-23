@@ -4,13 +4,11 @@ import com.fs.api.football.domain.Fixture;
 import com.fs.api.user.domain.User;
 import com.fs.configs.jpa.base.BaseDomain;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

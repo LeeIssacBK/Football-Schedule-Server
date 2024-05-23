@@ -33,6 +33,22 @@ public class AlertService {
                 .build());
     }
 
+    @Transactional
+    public void updateAlert(UserDto.Simple user, AlertDto.Request request) {
+        request.typeCheck();
+        alertRepository.findByToUserIdAndFixtureApiId(user.getUserId(), request.getFixtureId())
+                .ifPresent(alert -> {
+                    alert.setAlertType(request.getAlertType());
+                    alertRepository.save(alert);
+                });
+    }
+
+    @Transactional
+    public void deleteAlert(UserDto.Simple user, AlertDto.Request request) {
+        alertRepository.findByToUserIdAndFixtureApiId(user.getUserId(), request.getFixtureId())
+                .ifPresent(alertRepository::delete);
+    }
+
     @Transactional(readOnly = true)
     public List<AlertDto.Response> getAlerts(UserDto.Simple user) {
         return AlertDtoMapper.INSTANCE.toResponses(

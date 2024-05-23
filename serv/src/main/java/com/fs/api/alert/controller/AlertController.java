@@ -37,6 +37,20 @@ public class AlertController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "user 정보와 fixture_id 를 통해 알람을 수정한다.")
+    @PutMapping
+    public ResponseEntity<?> updateAlert(@UserPrincipal UserDto.Simple user, @RequestBody AlertDto.Request request) {
+        alertService.updateAlert(user, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "user 정보와 fixture_id 를 통해 알람을 삭제한다.")
+    @DeleteMapping
+    public ResponseEntity<?> deleteAlert(@UserPrincipal UserDto.Simple user, @RequestBody AlertDto.Request request) {
+        alertService.deleteAlert(user, request);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 }
