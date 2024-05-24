@@ -125,7 +125,7 @@ public class FixtureService {
                             .orElseThrow(() -> new NotFoundException("fixture"))
             ));
         });
-        alertRepository.findAllByToUserId(user.getUserId()).forEach(alert -> {
+        alertRepository.findAllByToUserIdOrderByFixtureDate(user.getUserId()).forEach(alert -> {
             for (FixtureDto.AppResponse fixtureDto : response) {
                 if (fixtureDto.getApiId() == alert.getFixture().getApiId()) {
                     fixtureDto.setAlert(true);

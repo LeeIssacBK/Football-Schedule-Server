@@ -52,7 +52,7 @@ public class AlertService {
     @Transactional(readOnly = true)
     public List<AlertDto.Response> getAlerts(UserDto.Simple user) {
         return AlertDtoMapper.INSTANCE.toResponses(
-                alertRepository.findAllByToUserId(user.getUserId())
+                alertRepository.findAllByToUserIdOrderByFixtureDate(user.getUserId())
         );
     }
 

@@ -21,6 +21,7 @@ public class Team extends BaseDomain {
     @Column(unique = true)
     private long apiId;
     private String name;
+    private String krName;
     private String code;
     private int founded;
     private boolean national;

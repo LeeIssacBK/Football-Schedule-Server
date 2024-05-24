@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface AlertRepository extends BaseRepository<Alert> {
 
-    List<Alert> findAllByToUserId(String userId);
+    List<Alert> findAllByToUserIdOrderByFixtureDate(String userId);
 
     Optional<Alert> findByToUserIdAndFixtureApiId(String userId, long fixtureId);
 

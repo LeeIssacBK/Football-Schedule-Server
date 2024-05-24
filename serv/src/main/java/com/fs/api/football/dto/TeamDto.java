@@ -43,6 +43,7 @@ public class TeamDto extends ApiResponse {
     public static class AppResponse {
         private long apiId;
         private String name;
+        private String krName;
         private String code;
         private int founded;
         private boolean national;
