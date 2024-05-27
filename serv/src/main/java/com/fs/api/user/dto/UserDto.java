@@ -2,6 +2,8 @@ package com.fs.api.user.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 public class UserDto {
 
     @Data
@@ -10,6 +12,7 @@ public class UserDto {
         private String userId;
         private String name;
         private String profileImage;
+        private LocalDateTime createdAt;
     }
 
 }
