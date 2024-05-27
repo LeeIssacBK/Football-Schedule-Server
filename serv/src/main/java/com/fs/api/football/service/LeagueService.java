@@ -88,7 +88,9 @@ public class LeagueService {
         return LeagueDtoMapper.INSTANCE.toAppResponse(
                 queryFactory.select(league)
                         .from(fixture)
-                        .where(fixture.league.country.code.eq(countryCode))
+                        .where(fixture.league.country.code.eq(countryCode)
+                                .and(fixture.league.type.eq(League.Type.LEAGUE)))
+                        .orderBy(fixture.league.apiId.asc())
                         .fetch()
         );
     }

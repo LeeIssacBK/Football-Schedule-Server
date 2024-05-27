@@ -9,6 +9,7 @@ public class UserDto {
         private Long id;
         private String userId;
         private String name;
+        private String profileImage;
     }
 
 }

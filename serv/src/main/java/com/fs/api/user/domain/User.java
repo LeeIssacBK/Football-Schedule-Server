@@ -3,15 +3,13 @@ package com.fs.api.user.domain;
 import com.fs.configs.jpa.base.BaseDomain;
 import com.fs.configs.jpa.converters.ListAttributeConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +26,8 @@ public class User extends BaseDomain {
     private String password;
 
     private String name;
+
+    private String profileImage;
 
     @Enumerated(value = EnumType.STRING)
     private SocialType socialType;

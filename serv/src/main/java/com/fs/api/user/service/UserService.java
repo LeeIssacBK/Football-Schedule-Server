@@ -23,13 +23,15 @@ public class UserService {
 
     @Transactional
     public User createOrFindByUser(KakaoDto.Auth auth) {
-        return userRepository.findByUserIdAndSocialType(String.valueOf(auth.getId()), SocialType.KAKAO)
+        User user = userRepository.findByUserIdAndSocialType(String.valueOf(auth.getId()), SocialType.KAKAO)
                 .orElseGet(() -> userRepository.save(User.builder()
                         .socialType(SocialType.KAKAO)
                         .userId(String.valueOf(auth.getId()))
                         .password(passwordEncoder.encode(auth.getId() + auth.getConnected_at()))
-                        .name(auth.getProperties().getNickname())
                         .roles(List.of("ROLE_USER")).build()));
+        user.setName(auth.getProperties().getNickname());
+        user.setProfileImage(auth.getProperties().getProfile_image());
+        return user;
     }
 
 }
