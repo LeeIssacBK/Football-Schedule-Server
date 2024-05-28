@@ -36,6 +36,10 @@ public class TokenProvider {
                 .build();
     }
 
+    public void deleteToken(String refreshToken) {
+        refreshTokenRepository.deleteById(refreshToken);
+    }
+
     public void checkPassword(String password1, String password2) {
         if (!passwordEncoder.matches(password1, password2)) {
             throw new NotMatchedException("not matched password");

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,13 @@ public class AuthController {
     @GetMapping("/kakao")
     public TokenDto.Token flutterKakaoLogin(@RequestParam String token) {
         return socialService.login(token);
+    }
+
+    @Operation(summary = "로그아웃(리프레쉬토큰 삭제)")
+    @DeleteMapping("/logout")
+    public ResponseEntity logout(@RequestHeader("RefreshToken") String refreshToken) {
+        tokenProvider.deleteToken(refreshToken);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "토큰연장")
