@@ -30,10 +30,16 @@ public class FixtureController {
         return fixtureService.get(teamId);
     }
 
-    @Operation(summary = "유저 아이디를 통해 구독한 팀들의 경기 정보를 가져온다.")
+    @Operation(summary = "유저 아이디를 통해 구독한 팀당 5경기 예정 정보를 가져온다.")
     @GetMapping("/subscribe")
-    public List<FixtureDto.AppResponse> get(@UserPrincipal UserDto.Simple user) {
+    public List<FixtureDto.AppResponse> getSubscribe(@UserPrincipal UserDto.Simple user) {
         return fixtureService.get(user);
+    }
+
+    @Operation(summary = "유저 아이디를 통해 구독한 팀들의 모든 경기 정보를 가져온다.")
+    @GetMapping("/calendar")
+    public List<FixtureDto.AppResponse> getCalendar(@UserPrincipal UserDto.Simple user) {
+        return fixtureService.getCalendar(user);
     }
 
 }

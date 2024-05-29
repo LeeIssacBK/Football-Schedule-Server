@@ -125,7 +125,27 @@ public class FixtureService {
                             .orElseThrow(() -> new NotFoundException("fixture"))
             ));
         });
-        alertRepository.findAllByToUserIdOrderByFixtureDate(user.getUserId()).forEach(alert -> {
+        return checkAlerts(response, user.getUserId());
+    }
+
+    public List<FixtureDto.AppResponse> getCalendar(UserDto.Simple user) {
+        List<FixtureDto.AppResponse> response = new ArrayList<>();
+        List<Team> teams = subscribeRepository.findAllByTypeAndUserUserIdAndIsDeleteFalse(SubscribeType.TEAM, user.getUserId())
+                .orElseThrow(() -> new NotFoundException("subscribes")).stream().map(Subscribe::getTeam).toList();
+        teams.forEach(team -> {
+            response.addAll(FixtureDtoMapper.INSTANCE.toAppResponse(
+                    Optional.of(queryFactory.selectFrom(fixture)
+                                    .where(fixture.home.eq(team).or(fixture.away.eq(team)))
+                                    .orderBy(fixture.date.asc())
+                                    .fetch())
+                            .orElseThrow(() -> new NotFoundException("fixture"))
+            ));
+        });
+        return response.stream().sorted(Comparator.comparing(FixtureDto.AppResponse::getDate)).toList();
+    }
+
+    private List<FixtureDto.AppResponse> checkAlerts(List<FixtureDto.AppResponse> response, String userId) {
+        alertRepository.findAllByToUserIdOrderByFixtureDate(userId).forEach(alert -> {
             for (FixtureDto.AppResponse fixtureDto : response) {
                 if (fixtureDto.getApiId() == alert.getFixture().getApiId()) {
                     fixtureDto.setAlert(true);
