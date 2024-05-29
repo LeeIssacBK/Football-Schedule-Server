@@ -11,16 +11,16 @@ import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -43,7 +43,7 @@ public class FixtureService {
     private final AlertRepository alertRepository;
     private final JPAQueryFactory queryFactory;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void update(long leagueId) {
         League league = leagueRepository.findByApiId(leagueId).orElseThrow(() -> new NotFoundException("league"));
         Season season = seasonRepository.findByLeagueAndCurrentIsTrue(league).orElseThrow(() -> new NotFoundException("season"));
@@ -154,6 +154,18 @@ public class FixtureService {
             }
         });
         return response.stream().sorted(Comparator.comparing(FixtureDto.AppResponse::getDate)).toList();
+    }
+
+    public void update() {
+        List<League> leagues = queryFactory.selectDistinct(fixture.league).from(fixture).stream().toList();
+        leagues.forEach(league -> {
+            try {
+                Thread.sleep(5000);
+                update(league.getApiId());
+            } catch (Exception e) {
+                //do not thing
+            }
+        });
     }
 
 }

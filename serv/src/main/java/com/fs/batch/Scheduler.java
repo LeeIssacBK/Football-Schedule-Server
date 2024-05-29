@@ -1,6 +1,7 @@
 package com.fs.batch;
 
 import com.fs.api.football.service.*;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,29 +24,41 @@ public class Scheduler {
     private final FixtureService fixtureService;
 
     //@Scheduled(cron = "0 0 0 * * *")
+    @Operation(summary = "국가정보를 업데이트한다.")
     @GetMapping("/country")
     void updateCountry() {
         countryService.update();
     }
 
+
+    @Operation(summary = "전세계 리그정보를 업데이트한다.")
     @GetMapping("/league")
     void updateSeason() {
         leagueService.update();
     }
 
+    @Operation(summary = "리그 아이디를 통해 팀정보를 업데이트한다.")
     @GetMapping("/team")
     void updateTeam(@RequestParam long leagueId) {
         teamService.update(leagueId);
     }
 
+    @Operation(summary = "팀 아이디를 통해 선수정보를 업데이트한다.")
     @GetMapping("/player")
     void updatePlayer(@RequestParam long teamId) {
         playerService.update(teamId);
     }
 
+    @Operation(summary = "리그 아이디를 통해 경기일정을 업데이트한다.")
     @GetMapping("/fixture")
     void updateFixture(@RequestParam long leagueId) {
         fixtureService.update(leagueId);
+    }
+
+    @Operation(summary = "경기정보를 가지고 있는 모든 리그를 최신화한다.")
+    @GetMapping("/update")
+    void update() {
+        fixtureService.update();
     }
 
 }
