@@ -61,4 +61,10 @@ public class Scheduler {
         fixtureService.update();
     }
 
+    @Operation(summary = "경기정보를 가지고 있는 모든 팀 통계정보를 최신화한다.")
+    @GetMapping("/update/statistics")
+    void updateStatistics() {
+        teamService.updateStatistics();
+    }
+
 }
