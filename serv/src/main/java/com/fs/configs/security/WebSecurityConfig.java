@@ -49,8 +49,8 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
-                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/oauth/**", "/oauth2/callback", "/webjars/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
             )
             .exceptionHandling(exceptionHandlingConfigurer -> {

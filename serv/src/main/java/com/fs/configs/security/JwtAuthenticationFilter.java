@@ -2,8 +2,10 @@ package com.fs.configs.security;
 
 import com.fs.common.exceptions.NotMatchedException;
 import com.fs.common.utils.JwtProvider;
+import com.fs.configs.security.support.RestAuthenticationEntryPoint;
 import com.fs.configs.security.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -28,18 +31,25 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        getToken(request).ifPresent(accessToken -> {
-            Jws<Claims> jws = jwtProvider.getClaims(accessToken);
-            if (jws != null) {
-                validateAccessToken(accessToken);
-                String username = jws.getBody().get("user_name", String.class);
-                processSecurity(request, userDetailsService.loadUserByUsername(username));
-            }
-        });
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        try {
+            getToken(request).ifPresent(accessToken -> {
+                Jws<Claims> jws = jwtProvider.getClaims(accessToken);
+                if (jws != null) {
+                    validateAccessToken(accessToken);
+                    String username = jws.getBody().get("user_name", String.class);
+                    processSecurity(request, userDetailsService.loadUserByUsername(username));
+                }
+            });
+        } catch (ExpiredJwtException e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        }  catch (Exception e) {
+            restAuthenticationEntryPoint.commence(request, response, (AuthenticationException) e);
+        }
         filterChain.doFilter(request, response);
     }
 
@@ -48,7 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             headerAuth = headerAuth.substring(7);
         }
-        String headerRefresh = request.getHeader("RefreshToken");
         return Optional.ofNullable(headerAuth);
     }
 
