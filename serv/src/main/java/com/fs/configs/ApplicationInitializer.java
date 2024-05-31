@@ -1,7 +1,7 @@
 package com.fs.configs;
 
 import com.fs.api.user.domain.User;
-import com.fs.api.user.repository.UserRepository;
+import com.fs.api.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

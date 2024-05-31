@@ -65,7 +65,3 @@ sourceSets {
 		}
 	}
 }
-
-tasks.named('test') {
-	useJUnitPlatform()
-}

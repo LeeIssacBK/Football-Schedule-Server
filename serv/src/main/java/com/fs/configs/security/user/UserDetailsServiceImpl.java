@@ -1,7 +1,7 @@
 package com.fs.configs.security.user;
 
 import com.fs.api.user.domain.User;
-import com.fs.api.user.repository.UserRepository;
+import com.fs.api.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Service("UserDetailsService")
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;

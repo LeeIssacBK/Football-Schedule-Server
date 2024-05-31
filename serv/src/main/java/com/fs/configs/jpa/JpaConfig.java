@@ -2,7 +2,7 @@ package com.fs.configs.jpa;
 
 import com.fs.api.user.domain.User;
 import com.fs.api.user.dto.UserDto;
-import com.fs.api.user.repository.UserRepository;
+import com.fs.api.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

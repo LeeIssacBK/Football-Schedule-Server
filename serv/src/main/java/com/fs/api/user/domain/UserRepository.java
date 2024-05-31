@@ -1,4 +1,4 @@
-package com.fs.api.user.repository;
+package com.fs.api.user.domain;
 
 import com.fs.api.user.domain.User;
 import com.fs.api.user.domain.User.SocialType;

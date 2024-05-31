@@ -4,7 +4,7 @@ import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.SubscribeDto;
 import com.fs.api.football.dto.SubscribeDtoMapper;
 import com.fs.api.user.dto.UserDto;
-import com.fs.api.user.repository.UserRepository;
+import com.fs.api.user.domain.UserRepository;
 import com.fs.common.enums.SubscribeType;
 import com.fs.common.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;

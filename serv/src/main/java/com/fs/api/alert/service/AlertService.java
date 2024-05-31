@@ -6,7 +6,7 @@ import com.fs.api.alert.dto.AlertDto;
 import com.fs.api.alert.dto.AlertDtoMapper;
 import com.fs.api.football.domain.FixtureRepository;
 import com.fs.api.user.dto.UserDto;
-import com.fs.api.user.repository.UserRepository;
+import com.fs.api.user.domain.UserRepository;
 import com.fs.common.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
