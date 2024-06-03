@@ -45,12 +45,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     processSecurity(request, userDetailsService.loadUserByUsername(username));
                 }
             });
+            filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
-        }  catch (Exception e) {
-            restAuthenticationEntryPoint.commence(request, response, (AuthenticationException) e);
+        } catch (AuthenticationException e) {
+            restAuthenticationEntryPoint.commence(request, response, e);
         }
-        filterChain.doFilter(request, response);
     }
 
     private Optional<String> getToken(HttpServletRequest request) {
