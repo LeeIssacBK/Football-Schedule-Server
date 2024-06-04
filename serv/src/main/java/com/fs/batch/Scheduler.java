@@ -55,13 +55,19 @@ public class Scheduler {
         fixtureService.update(leagueId);
     }
 
-    @Operation(summary = "경기정보를 가지고 있는 모든 리그를 최신화한다.")
+    @Operation(summary = "경기일정을 가지고 있는 모든 리그를 최신화한다.")
     @GetMapping("/update")
     void update() {
         fixtureService.update();
     }
 
-    @Operation(summary = "경기정보를 가지고 있는 모든 팀 통계정보를 최신화한다.")
+    @Operation(summary = "팀의 리그 순위 및 최근경기 결과 정보를 최신화한다.")
+    @GetMapping("/update/standing")
+    void updateStanding() {
+        teamService.updateStanding();
+    }
+
+    @Operation(summary = "경기일정 정보를 가지고 있는 팀 통계정보를 최신화한다.")
     @GetMapping("/update/statistics")
     void updateStatistics() {
         teamService.updateStatistics();

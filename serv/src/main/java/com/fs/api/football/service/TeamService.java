@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.fs.api.football.domain.QFixture.fixture;
 
@@ -149,25 +150,27 @@ public class TeamService {
                         .bodyToMono(StandingDto.class)
                         .subscribe(data -> {
                             data.getResponse().forEach(response -> {
-                                response.getStandings().forEach(standing -> {
-                                    standingRepository.findByTeamApiId(standing.getTeam().getId()).ifPresentOrElse(
-                                            entity -> {
-                                                StandingDtoMapper.INSTANCE.update(standing, entity);
-                                            }, () -> {
-                                            standingRepository.save(
-                                                    Standing.builder()
-                                                    .team(teamRepository.save(teamRepository.findByApiId(standing.getTeam().getId()).orElseThrow(() -> new NotFoundException("team"))))
-                                                            .points(standing.getPoints())
-                                                            .goalsDiff(standing.getGoalsDiff())
-                                                            .group(standing.getGroup())
-                                                            .form(standing.getForm())
-                                                            .status(standing.getStatus())
-                                                            .description(standing.getDescription())
-                                                            .all(standing.getAll())
-                                                            .home(standing.getHome())
-                                                            .away(standing.getAway())
-                                                            .updateAt(standing.getUpdate().toLocalDateTime())
-                                                    .build());});
+                                Optional.of(response.getLeague().getStandings()).ifPresent(standings -> {
+                                    standings.forEach(standing -> {
+                                        standingRepository.findByTeamApiId(standing.getTeam().getId()).ifPresentOrElse(
+                                                entity -> {
+                                                    StandingDtoMapper.INSTANCE.update(standing, entity);
+                                                }, () -> {
+                                                    standingRepository.save(
+                                                            Standing.builder()
+                                                                    .team(teamRepository.save(teamRepository.findByApiId(standing.getTeam().getId()).orElseThrow(() -> new NotFoundException("team"))))
+                                                                    ._rank(standing.get_rank())
+                                                                    .points(standing.getPoints())
+                                                                    .goalsDiff(standing.getGoalsDiff())
+                                                                    ._group(standing.get_group())
+                                                                    .form(standing.getForm())
+                                                                    ._status(standing.get_status())
+                                                                    .description(standing.getDescription())
+                                                                    ._all(standing.get_all())
+                                                                    .home(standing.getHome())
+                                                                    .away(standing.getAway())
+                                                                    .build());});
+                                    });
                                 });
                             });
                         });
