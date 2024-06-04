@@ -1,10 +1,7 @@
 package com.fs.api.football.service;
 
 import com.fs.api.football.domain.*;
-import com.fs.api.football.dto.TeamDto;
-import com.fs.api.football.dto.TeamDtoMapper;
-import com.fs.api.football.dto.TeamStatisticsDto;
-import com.fs.api.football.dto.TeamStatisticsDtoMapper;
+import com.fs.api.football.dto.*;
 import com.fs.api.football.util.ApiProvider;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
@@ -32,6 +29,7 @@ public class TeamService {
     private final SeasonRepository seasonRepository;
     private final TeamRepository teamRepository;
     private final TeamStatisticsRepository teamStatisticsRepository;
+    private final StandingRepository standingRepository;
     private final JPAQueryFactory queryFactory;
 
     @Transactional
@@ -132,8 +130,51 @@ public class TeamService {
                 //do nothing...
             }
         });
+    }
 
-
+    @Transactional
+    public void updateStanding() {
+        queryFactory.selectDistinct(fixture.league).from(fixture).stream().forEach(league -> {
+            try {
+                Season season = seasonRepository.findByLeagueAndCurrentIsTrue(league).orElseThrow(() -> new NotFoundException("season"));
+                UriComponents url = UriComponentsBuilder.fromUriString(URL.FOOTBALL_API.getValue())
+                        .path("/standings")
+                        .queryParam("league", league.getApiId())
+                        .queryParam("season", season.getYear())
+                        .build();
+                webClient.get()
+                        .uri(url.toUri())
+                        .headers(ApiProvider.getHeader())
+                        .retrieve()
+                        .bodyToMono(StandingDto.class)
+                        .subscribe(data -> {
+                            data.getResponse().forEach(response -> {
+                                response.getStandings().forEach(standing -> {
+                                    standingRepository.findByTeamApiId(standing.getTeam().getId()).ifPresentOrElse(
+                                            entity -> {
+                                                StandingDtoMapper.INSTANCE.update(standing, entity);
+                                            }, () -> {
+                                            standingRepository.save(
+                                                    Standing.builder()
+                                                    .team(teamRepository.save(teamRepository.findByApiId(standing.getTeam().getId()).orElseThrow(() -> new NotFoundException("team"))))
+                                                            .points(standing.getPoints())
+                                                            .goalsDiff(standing.getGoalsDiff())
+                                                            .group(standing.getGroup())
+                                                            .form(standing.getForm())
+                                                            .status(standing.getStatus())
+                                                            .description(standing.getDescription())
+                                                            .all(standing.getAll())
+                                                            .home(standing.getHome())
+                                                            .away(standing.getAway())
+                                                            .updateAt(standing.getUpdate().toLocalDateTime())
+                                                    .build());});
+                                });
+                            });
+                        });
+            } catch (Exception e) {
+                //do nothing...
+            }
+        });
     }
 
     public List<TeamDto.AppResponse> get(long leagueId) {

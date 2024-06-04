@@ -180,4 +180,9 @@ public class TeamStatisticsDto extends ApiResponse {
         }
     }
 
+    @Data
+    public static class AppResponse {
+
+    }
+
 }
