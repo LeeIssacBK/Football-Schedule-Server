@@ -13,5 +13,4 @@ public interface TeamDtoMapper {
 
     List<TeamDto.AppResponse> toAppResponse(List<Team> teams);
 
-
 }

@@ -110,7 +110,6 @@ public class TeamService {
                             .retrieve()
                             .bodyToMono(TeamStatisticsDto.class)
                             .subscribe(data -> {
-                                log.warn(data.toString());
                                 TeamStatisticsDto.Response response = data.getResponse();
                                 teamStatisticsRepository.findByTeam(team).ifPresentOrElse(
                                         teamStatistics -> {

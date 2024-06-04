@@ -13,4 +13,6 @@ public interface LeagueDtoMapper {
 
     List<LeagueDto.AppResponse> toAppResponse(List<League> leagues);
 
+    LeagueDto.AppResponse toAppResponse(League league);
+
 }

@@ -7,6 +7,7 @@ import com.fs.api.user.dto.UserDto;
 import com.fs.api.user.domain.UserRepository;
 import com.fs.common.enums.SubscribeType;
 import com.fs.common.exceptions.NotFoundException;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.fs.api.football.domain.QSubscribe.subscribe;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class SubscribeService {
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
     private final SubscribeRepository subscribeRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Transactional
     public void subscribe(UserDto.Simple user, SubscribeDto.Request request) {
