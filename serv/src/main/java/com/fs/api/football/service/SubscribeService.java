@@ -27,7 +27,6 @@ public class SubscribeService {
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
     private final SubscribeRepository subscribeRepository;
-    private final JPAQueryFactory queryFactory;
 
     @Transactional
     public void subscribe(UserDto.Simple user, SubscribeDto.Request request) {

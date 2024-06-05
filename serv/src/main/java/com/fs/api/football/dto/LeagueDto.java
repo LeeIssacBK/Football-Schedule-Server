@@ -66,12 +66,10 @@ public class LeagueDto extends ApiResponse {
 
     @Data
     public static class AppResponse {
-
         private long apiId;
         private String name;
         private String logo;
         private Type type;
-
     }
 
 }

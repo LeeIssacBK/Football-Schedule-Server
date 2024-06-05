@@ -12,4 +12,6 @@ public interface StandingDtoMapper {
 
     void update(StandingDto.Response.Standing dto, @MappingTarget Standing standing);
 
+    StandingDto.AppResponse toAppResponse(Standing standing);
+
 }

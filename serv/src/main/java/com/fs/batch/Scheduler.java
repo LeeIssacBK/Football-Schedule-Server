@@ -22,6 +22,9 @@ public class Scheduler {
     private final TeamService teamService;
     private final PlayerService playerService;
     private final FixtureService fixtureService;
+    private final TeamStatisticsService teamStatisticsService;
+    private final TeamStandingService teamStandingService;
+
 
     //@Scheduled(cron = "0 0 0 * * *")
     @Operation(summary = "국가정보를 업데이트한다.")
@@ -64,13 +67,13 @@ public class Scheduler {
     @Operation(summary = "팀의 리그 순위 및 최근경기 결과 정보를 최신화한다.")
     @GetMapping("/update/standing")
     void updateStanding() {
-        teamService.updateStanding();
+        teamStandingService.updateStanding();
     }
 
     @Operation(summary = "경기일정 정보를 가지고 있는 팀 통계정보를 최신화한다.")
     @GetMapping("/update/statistics")
     void updateStatistics() {
-        teamService.updateStatistics();
+        teamStatisticsService.updateStatistics();
     }
 
 }

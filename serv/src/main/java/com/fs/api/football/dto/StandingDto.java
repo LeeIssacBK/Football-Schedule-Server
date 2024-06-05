@@ -72,5 +72,19 @@ public class StandingDto extends ApiResponse {
 
     }
 
+    @Data
+    public static class AppResponse {
+        private Integer _rank;
+        private Integer points;
+        private Integer goalsDiff;
+        private String _group;
+        private String form;
+        private String _status;
+        private String description;
+        private Response.Standing.Game _all;
+        private Response.Standing.Game home;
+        private Response.Standing.Game away;
+    }
+
 
 }
