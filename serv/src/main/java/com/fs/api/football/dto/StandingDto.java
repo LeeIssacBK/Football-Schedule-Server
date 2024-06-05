@@ -35,6 +35,7 @@ public class StandingDto extends ApiResponse {
             private Team team;
             private Integer points;
             private Integer goalsDiff;
+            @JsonAlias("group")
             private String _group;
             private String form;
             @JsonAlias("status")
