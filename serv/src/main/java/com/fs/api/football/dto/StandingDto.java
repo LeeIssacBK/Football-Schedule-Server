@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 public class StandingDto extends ApiResponse {
 
@@ -25,7 +25,7 @@ public class StandingDto extends ApiResponse {
             private String logo;
             private String flag;
             private Integer season;
-            private List<Standing> standings;
+            private List<List<Standing>> standings;
         }
 
         @Data

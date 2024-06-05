@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.fs.api.football.domain.QFixture.fixture;
@@ -65,19 +66,19 @@ public class TeamService {
                                 team.setStadiumImage(venueResponse.getImage());
                             }, () -> {
                                 teamRepository.save(Team.builder()
-                                                .league(league)
-                                                .season(season)
-                                                .apiId(teamResponse.getId())
-                                                .name(teamResponse.getName())
-                                                .code(teamResponse.getCode())
-                                                .founded(teamResponse.getFounded())
-                                                .national(teamResponse.isNational())
-                                                .logo(teamResponse.getLogo())
-                                                .stadium(venueResponse.getName())
-                                                .address(venueResponse.getAddress())
-                                                .city(venueResponse.getCity())
-                                                .capacity(venueResponse.getCapacity())
-                                                .stadiumImage(venueResponse.getImage())
+                                        .league(league)
+                                        .season(season)
+                                        .apiId(teamResponse.getId())
+                                        .name(teamResponse.getName())
+                                        .code(teamResponse.getCode())
+                                        .founded(teamResponse.getFounded())
+                                        .national(teamResponse.isNational())
+                                        .logo(teamResponse.getLogo())
+                                        .stadium(venueResponse.getName())
+                                        .address(venueResponse.getAddress())
+                                        .city(venueResponse.getCity())
+                                        .capacity(venueResponse.getCapacity())
+                                        .stadiumImage(venueResponse.getImage())
                                         .build());
                             });
                         } catch (Exception e) {
@@ -85,9 +86,9 @@ public class TeamService {
                             log.error(e.getMessage());
                         }
                     });
-            }, error -> {
-                throw new BadRequestException(error.getMessage());
-        });
+                }, error -> {
+                    throw new BadRequestException(error.getMessage());
+                });
     }
 
     @Transactional
@@ -151,7 +152,7 @@ public class TeamService {
                         .subscribe(data -> {
                             data.getResponse().forEach(response -> {
                                 Optional.of(response.getLeague().getStandings()).ifPresent(standings -> {
-                                    standings.forEach(standing -> {
+                                    standings.get(0).forEach(standing -> {
                                         standingRepository.findByTeamApiId(standing.getTeam().getId()).ifPresentOrElse(
                                                 entity -> {
                                                     StandingDtoMapper.INSTANCE.update(standing, entity);
@@ -169,11 +170,13 @@ public class TeamService {
                                                                     ._all(standing.get_all())
                                                                     .home(standing.getHome())
                                                                     .away(standing.getAway())
-                                                                    .build());});
+                                                                    .build());
+                                                });
                                     });
                                 });
                             });
                         });
+                Thread.sleep(1000);
             } catch (Exception e) {
                 //do nothing...
             }
