@@ -83,9 +83,11 @@ public class TeamStandingService {
 
 
     public StandingDto.AppResponse getStanding(long teamId) {
-        return StandingDtoMapper.INSTANCE.toAppResponse(
-                standingRepository.findByTeamApiId(teamId).orElse(null)
-        );
+        Standing standing = standingRepository.findByTeamApiId(teamId).orElse(null);
+        StandingDto.Response.Standing.Game _all = standing.get_all();
+        StandingDto.Response.Standing.Game home = standing.getHome();
+        StandingDto.Response.Standing.Game away = standing.getAway();
+        return StandingDtoMapper.INSTANCE.toAppResponse(standing);
     }
 
 }

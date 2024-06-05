@@ -2,7 +2,7 @@ package com.fs.api.football.domain;
 
 import com.fs.api.football.dto.StandingDto;
 import com.fs.configs.jpa.base.BaseDomain;
-import com.fs.configs.jpa.converters.MapAttributeConverter;
+import com.fs.configs.jpa.converters.columns.StandingConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,15 +26,15 @@ public class Standing extends BaseDomain {
     private String description;
 
     @Column(columnDefinition = "TEXT")
-    @Convert(converter = MapAttributeConverter.class)
+    @Convert(converter = StandingConverter.class)
     private StandingDto.Response.Standing.Game _all;
 
     @Column(columnDefinition = "TEXT")
-    @Convert(converter = MapAttributeConverter.class)
+    @Convert(converter = StandingConverter.class)
     private StandingDto.Response.Standing.Game home;
 
     @Column(columnDefinition = "TEXT")
-    @Convert(converter = MapAttributeConverter.class)
+    @Convert(converter = StandingConverter.class)
     private StandingDto.Response.Standing.Game away;
 
 }
