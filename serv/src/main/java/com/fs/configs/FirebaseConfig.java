@@ -20,13 +20,11 @@ public class FirebaseConfig {
 
     @Value("classpath:google-service-account.json")
     private Resource resource;
+
     @PostConstruct
-    public FirebaseApp init() throws IOException {
-
-        FileInputStream serviceAccount = new FileInputStream(resource.getFile());
-
+    public FirebaseApp initializeFcm() throws IOException {
         FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setCredentials(GoogleCredentials.fromStream(new FileInputStream(resource.getFile())))
                 .build();
         firebaseApp = FirebaseApp.initializeApp(options);
         return firebaseApp;

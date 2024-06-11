@@ -1,5 +1,6 @@
 package com.fs.batch;
 
+import com.fs.api.alert.service.FirebaseService;
 import com.fs.api.football.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +25,7 @@ public class Scheduler {
     private final FixtureService fixtureService;
     private final TeamStatisticsService teamStatisticsService;
     private final TeamStandingService teamStandingService;
+    private final FirebaseService firebaseService;
 
 
     //@Scheduled(cron = "0 0 0 * * *")
@@ -74,5 +76,16 @@ public class Scheduler {
     void updateStatistics() {
         teamStatisticsService.updateStatistics();
     }
+
+    @Operation(summary = "메세지 전송")
+    @GetMapping("/message/send")
+    void sendMessage() {
+        try {
+            firebaseService.send();
+        } catch (Exception e) {
+            //do nothing..
+        }
+    }
+
 
 }
