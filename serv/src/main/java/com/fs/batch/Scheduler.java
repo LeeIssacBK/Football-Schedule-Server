@@ -33,7 +33,6 @@ public class Scheduler {
         countryService.update();
     }
 
-
     @Operation(summary = "전세계 리그정보를 업데이트한다.")
     @GetMapping("/league")
     void updateSeason() {
