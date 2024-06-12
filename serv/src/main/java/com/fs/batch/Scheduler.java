@@ -86,11 +86,12 @@ public class Scheduler {
     @GetMapping("/message/send")
     void sendAlertMessage() {
         try {
-            //step 1 - Alert의 isSend 가 false 이고 fixture의 date가 현재 시간보다 이후의 객체를 구한다.
+            //step 1 - Alert의 isSend 가 false 이고 send time 이 현재시간과 같은 데이터 추출.
             List<AlertDto.Message> alerts = alertService.getAlertMessages();
 
             //step 2 - firebase admin sdk 를 통해 디바이스에 메세지를 전송한다.
             firebaseService.send(alerts);
+
         } catch (Exception e) {
             //do nothing..
         }

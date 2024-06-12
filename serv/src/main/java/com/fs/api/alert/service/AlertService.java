@@ -66,9 +66,8 @@ public class AlertService {
         );
     }
 
-    @Transactional(readOnly = true)
     public List<AlertDto.Message> getAlertMessages() {
-        return queryFactory
+        List<AlertDto.Message> alerts = queryFactory
                 .select(Projections.constructor(
                         AlertDto.Message.class,
                         alert.id.as("alertId"),
@@ -84,10 +83,13 @@ public class AlertService {
                 .innerJoin(device)
                 .on(alert.to.eq(device.user))
                 .where(alert.isSend.isFalse()
-                        .and(alert.fixture.date.after(LocalDateTime.now()))
+                        .and(alert.sendTime.isNotNull())
+                        .and(alert.sendTime.eq(LocalDateTime.now()))
                 )
                 .orderBy(alert.fixture.date.asc())
                 .fetch();
+        alertRepository.updateAllByIsSendTrue(alerts.stream().map(AlertDto.Message::getAlertId).toList());
+        return alerts;
     }
 
     private LocalDateTime generateSendTime(LocalDateTime fixtureDateTime, Alert.AlertType alertType) {

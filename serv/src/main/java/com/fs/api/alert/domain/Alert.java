@@ -18,12 +18,16 @@ import java.time.LocalDateTime;
 @Entity
 public class Alert extends BaseDomain {
 
+    @Getter
+    @AllArgsConstructor
     public enum AlertType {
-        BEFORE_30MINUTES,
-        BEFORE_1HOURS,
-        BEFORE_3HOURS,
-        BEFORE_6HOURS,
-        BEFORE_1DAYS
+        BEFORE_30MINUTES("30분"),
+        BEFORE_1HOURS("1시간"),
+        BEFORE_3HOURS("3시간"),
+        BEFORE_6HOURS("6시간"),
+        BEFORE_1DAYS("하루");
+
+        private final String krDes;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
