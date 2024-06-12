@@ -26,12 +26,25 @@ public class FirebaseService {
                             .setNotification(
                                     Notification.builder()
                                             .setTitle("경기시작 알림")
-                                            .setBody(alert.getHome() + " vs " + alert.getAway() + "경기가 " + alert.getAlertType().getKrDes() + "뒤에 시작됩니다.")
+                                            .setBody(generateMessage(alert))
                                             .build())
                             .setToken(alert.getFcmToken())
                             .build());
         });
         BatchResponse response = firebaseMessaging.sendAll(messages);
+
+        log.warn(
+                String.format("[FIREBASE MESSAGE SEND]\nsuccess count : %d || failure count : %d",
+                        response.getSuccessCount(),
+                        response.getFailureCount())
+        );
+    }
+
+    private String generateMessage(AlertDto.Message alert) {
+        return String.format("%s vs %s 경기가 %s 뒤에 시작됩니다.",
+                alert.getHomeKrName() != null ? alert.getHomeKrName() : alert.getHomeName(),
+                alert.getHomeKrName() != null ? alert.getHomeKrName() : alert.getHomeName(),
+                alert.getAlertType().getKrDes());
     }
 
 }

@@ -79,8 +79,10 @@ public class AlertService {
                         device.fcmToken.as("fcmToken"),
                         alert.alertType.as("alertType"),
                         alert.fixture.date.as("date"),
-                        alert.fixture.home.krName.as("home"),
-                        alert.fixture.away.krName.as("away"))
+                        alert.fixture.home.name.as("homeName"),
+                        alert.fixture.away.name.as("awayName"),
+                        alert.fixture.home.krName.as("homeKrName"),
+                        alert.fixture.away.krName.as("awayKrName"))
                 )
                 .from(alert)
                 .innerJoin(device)

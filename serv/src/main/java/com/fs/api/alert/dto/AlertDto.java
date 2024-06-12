@@ -40,8 +40,10 @@ public class AlertDto {
         private String fcmToken;
         private Alert.AlertType alertType;
         private LocalDateTime date;
-        private String home;
-        private String away;
+        private String homeName;
+        private String homeKrName;
+        private String awayName;
+        private String awayKrName;
     }
 
 
