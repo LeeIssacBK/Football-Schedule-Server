@@ -90,10 +90,11 @@ public class Scheduler {
             List<AlertDto.Message> alerts = alertService.getAlertMessages();
 
             //step 2 - firebase admin sdk 를 통해 디바이스에 메세지를 전송한다.
-            firebaseService.send(alerts);
-
+            if (!alerts.isEmpty()) {
+                firebaseService.send(alerts);
+            }
         } catch (Exception e) {
-            //do nothing..
+            log.error(e.getMessage());
         }
     }
 

@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.fs.api.alert.domain.QAlert.alert;
@@ -67,6 +69,7 @@ public class AlertService {
     }
 
     public List<AlertDto.Message> getAlertMessages() {
+        LocalDateTime now = LocalDateTime.now();
         List<AlertDto.Message> alerts = queryFactory
                 .select(Projections.constructor(
                         AlertDto.Message.class,
@@ -84,11 +87,15 @@ public class AlertService {
                 .on(alert.to.eq(device.user))
                 .where(alert.isSend.isFalse()
                         .and(alert.sendTime.isNotNull())
-                        .and(alert.sendTime.eq(LocalDateTime.now()))
+                        .and(alert.sendTime.eq(LocalDateTime.of(
+                                LocalDate.now(), LocalTime.of(now.getHour(), now.getMinute()))))
                 )
                 .orderBy(alert.fixture.date.asc())
                 .fetch();
-        alertRepository.updateAllByIsSendTrue(alerts.stream().map(AlertDto.Message::getAlertId).toList());
+        List<Long> ids = alerts.stream().map(AlertDto.Message::getAlertId).toList();
+        if (!ids.isEmpty()) {
+            alertRepository.updateAllByIsSendTrue(ids);
+        }
         return alerts;
     }
 

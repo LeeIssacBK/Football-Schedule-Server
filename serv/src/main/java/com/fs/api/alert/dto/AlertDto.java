@@ -2,6 +2,7 @@ package com.fs.api.alert.dto;
 
 import com.fs.api.alert.domain.Alert;
 import com.fs.api.football.dto.FixtureDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class AlertDto {
     }
 
     @Data
+    @AllArgsConstructor
     public static class Message {
         private Long alertId;
         private String uuid;
