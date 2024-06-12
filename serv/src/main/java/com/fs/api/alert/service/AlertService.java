@@ -79,6 +79,7 @@ public class AlertService {
                         device.fcmToken.as("fcmToken"),
                         alert.alertType.as("alertType"),
                         alert.fixture.date.as("date"),
+                        alert.fixture.league.logo.as("leagueLogo"),
                         alert.fixture.home.name.as("homeName"),
                         alert.fixture.away.name.as("awayName"),
                         alert.fixture.home.krName.as("homeKrName"),
@@ -94,9 +95,8 @@ public class AlertService {
                 )
                 .orderBy(alert.fixture.date.asc())
                 .fetch();
-        List<Long> ids = alerts.stream().map(AlertDto.Message::getAlertId).toList();
-        if (!ids.isEmpty()) {
-            alertRepository.updateAllByIsSendTrue(ids);
+        if (!alerts.isEmpty()) {
+            alertRepository.updateAllByIsSendTrue(alerts.stream().map(AlertDto.Message::getAlertId).toList());
         }
         return alerts;
     }

@@ -25,6 +25,7 @@ public class FirebaseService {
                     Message.builder()
                             .setNotification(
                                     Notification.builder()
+//                                            .setImage(alert.getLeagueLogo())
                                             .setTitle("경기시작 알림")
                                             .setBody(generateMessage(alert))
                                             .build())
@@ -43,7 +44,7 @@ public class FirebaseService {
     private String generateMessage(AlertDto.Message alert) {
         return String.format("%s vs %s 경기가 %s 뒤에 시작됩니다.",
                 alert.getHomeKrName() != null ? alert.getHomeKrName() : alert.getHomeName(),
-                alert.getHomeKrName() != null ? alert.getHomeKrName() : alert.getHomeName(),
+                alert.getAwayKrName() != null ? alert.getAwayKrName() : alert.getAwayName(),
                 alert.getAlertType().getKrDes());
     }
 
