@@ -13,4 +13,6 @@ public interface FixtureDtoMapper {
 
     List<FixtureDto.AppResponse> toAppResponse(List<Fixture> fixtures);
 
+    FixtureDto.AppResponse toAppResponse(Fixture fixture);
+
 }

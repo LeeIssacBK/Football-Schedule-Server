@@ -2,10 +2,13 @@ package com.fs.api.alert.domain;
 
 import com.fs.api.football.domain.Fixture;
 import com.fs.api.user.domain.User;
+import com.fs.common.exceptions.NotFoundException;
 import com.fs.configs.jpa.base.BaseDomain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -23,8 +26,6 @@ public class Alert extends BaseDomain {
         BEFORE_1DAYS
     }
 
-    private String message;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Fixture fixture;
 
@@ -36,5 +37,7 @@ public class Alert extends BaseDomain {
 
     @Enumerated(EnumType.STRING)
     private AlertType alertType = AlertType.BEFORE_30MINUTES;
+
+    private LocalDateTime sendTime;
 
 }

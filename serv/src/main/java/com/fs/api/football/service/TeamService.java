@@ -3,8 +3,6 @@ package com.fs.api.football.service;
 import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.TeamDto;
 import com.fs.api.football.dto.TeamDtoMapper;
-import com.fs.api.football.dto.TeamStatisticsDto;
-import com.fs.api.football.dto.TeamStatisticsDtoMapper;
 import com.fs.api.football.util.ApiProvider;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
@@ -19,8 +17,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-
-import static com.fs.api.football.domain.QFixture.fixture;
 
 @Slf4j
 @RequiredArgsConstructor

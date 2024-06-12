@@ -19,7 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-import static com.fs.api.football.domain.QCountry.country;
 import static com.fs.api.football.domain.QFixture.fixture;
 import static com.fs.api.football.domain.QLeague.league;
 

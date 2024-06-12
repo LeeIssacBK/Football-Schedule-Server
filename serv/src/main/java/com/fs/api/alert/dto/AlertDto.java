@@ -4,6 +4,8 @@ import com.fs.api.alert.domain.Alert;
 import com.fs.api.football.dto.FixtureDto;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 public class AlertDto {
 
     @Data
@@ -26,6 +28,18 @@ public class AlertDto {
                 this.alertType = Alert.AlertType.BEFORE_30MINUTES;
             }
         }
+    }
+
+    @Data
+    public static class Message {
+        private Long alertId;
+        private String uuid;
+        private String platform;
+        private String fcmToken;
+        private Alert.AlertType alertType;
+        private LocalDateTime date;
+        private String home;
+        private String away;
     }
 
 

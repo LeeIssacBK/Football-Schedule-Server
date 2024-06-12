@@ -1,5 +1,7 @@
 package com.fs.batch;
 
+import com.fs.api.alert.dto.AlertDto;
+import com.fs.api.alert.service.AlertService;
 import com.fs.api.alert.service.FirebaseService;
 import com.fs.api.football.service.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class Scheduler {
     private final TeamStatisticsService teamStatisticsService;
     private final TeamStandingService teamStandingService;
     private final FirebaseService firebaseService;
+    private final AlertService alertService;
 
 
     //@Scheduled(cron = "0 0 0 * * *")
@@ -79,9 +84,13 @@ public class Scheduler {
 
     @Operation(summary = "메세지 전송")
     @GetMapping("/message/send")
-    void sendMessage() {
+    void sendAlertMessage() {
         try {
-            firebaseService.send();
+            //step 1 - Alert의 isSend 가 false 이고 fixture의 date가 현재 시간보다 이후의 객체를 구한다.
+            List<AlertDto.Message> alerts = alertService.getAlertMessages();
+
+            //step 2 - firebase admin sdk 를 통해 디바이스에 메세지를 전송한다.
+            firebaseService.send(alerts);
         } catch (Exception e) {
             //do nothing..
         }
