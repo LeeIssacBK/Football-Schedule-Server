@@ -72,7 +72,7 @@ test {
 	useJUnitPlatform()
 }
 
-tasks.register('explodedWar', Copy) {
+task explodedWar(type: Copy) {
 	into "$DEFAULT_BUILD_DIR_NAME/exploded"
 	with war
 }
