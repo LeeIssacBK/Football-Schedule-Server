@@ -17,53 +17,53 @@
       <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
     </Console>
 
-    <Slack name="slack"
-      webhookUrl="https://hooks.slack.com/services/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"
-      channel="error_notify_prod" username="Server-log">
-      <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
-    </Slack>
+<!--    <Slack name="slack"-->
+<!--      webhookUrl="https://hooks.slack.com/services/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"-->
+<!--      channel="error_notify_prod" username="Server-log">-->
+<!--      <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>-->
+<!--    </Slack>-->
 
-    <Async name="asyncSlack" includeLocation="true">
-      <AppenderRef ref="slack"/>
-    </Async>
+<!--    <Async name="asyncSlack" includeLocation="true">-->
+<!--      <AppenderRef ref="slack"/>-->
+<!--    </Async>-->
   </Appenders>
 
   <Loggers>
     <!-- Application Loggers -->
-    <logger name="com.bankmall" level="WARN" additivity="false">
+    <logger name="com.fs" level="WARN" additivity="false">
       <AppenderRef ref="console2"/>
-      <AppenderRef ref="slack"/>
+<!--      <AppenderRef ref="slack"/>-->
     </logger>
 
     <logger name="org.springframework.security.web" level="ERROR" additivity="false">
       <AppenderRef ref="console2"/>
-      <AppenderRef ref="slack"/>
+<!--      <AppenderRef ref="slack"/>-->
     </logger>
 
     <logger name="org.hibernate.SQL" level="ERROR" additivity="false">
       <AppenderRef ref="console2"/>
-      <AppenderRef ref="slack"/>
+<!--      <AppenderRef ref="slack"/>-->
     </logger>
 
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="ERROR" additivity="false">
       <AppenderRef ref="console2"/>
-      <AppenderRef ref="slack"/>
+<!--      <AppenderRef ref="slack"/>-->
     </logger>
 
     <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG" additivity="false">
       <AppenderRef ref="console2"/>
-      <AppenderRef ref="slack"/>
+<!--      <AppenderRef ref="slack"/>-->
     </logger>
 
     <logger name="com.zaxxer.hikari" level="TRACE" additivity="false">
       <AppenderRef ref="console2"/>
-      <AppenderRef ref="slack"/>
+<!--      <AppenderRef ref="slack"/>-->
     </logger>
 
     <!-- FATAL, ERROR, WARN, INFO, DEBUG, TRACE -->
     <Root level="INFO">
       <AppenderRef ref="console2"/>
-      <AppenderRef ref="slack"/>
+<!--      <AppenderRef ref="slack"/>-->
     </Root>
   </Loggers>
 </Configuration>

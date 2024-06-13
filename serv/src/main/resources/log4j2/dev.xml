@@ -20,7 +20,7 @@
 
   <Loggers>
     <!-- Application Loggers -->
-    <logger name="com.bankmall" level="INFO" additivity="false">
+    <logger name="com.fs" level="INFO" additivity="false">
       <AppenderRef ref="console2"/>
     </logger>
 

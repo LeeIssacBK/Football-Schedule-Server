@@ -71,3 +71,8 @@ sourceSets {
 test {
 	useJUnitPlatform()
 }
+
+tasks.register('explodedWar', Copy) {
+	into "$DEFAULT_BUILD_DIR_NAME/exploded"
+	with war
+}
