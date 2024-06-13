@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'war'
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
@@ -72,7 +73,7 @@ test {
 	useJUnitPlatform()
 }
 
-task explodedWar(type: Copy) {
+tasks.register('explodedWar', Copy) {
 	into "$DEFAULT_BUILD_DIR_NAME/exploded"
 	with war
 }
