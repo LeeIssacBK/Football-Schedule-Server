@@ -61,7 +61,7 @@
     </logger>
 
     <!-- FATAL, ERROR, WARN, INFO, DEBUG, TRACE -->
-    <Root level="INFO">
+    <Root level="WARN">
       <AppenderRef ref="console2"/>
 <!--      <AppenderRef ref="slack"/>-->
     </Root>

@@ -42,31 +42,31 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain config(HttpSecurity http) throws Exception {
         return http
-            .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-            .authorizeHttpRequests(authorize ->
-                authorize.requestMatchers(WHITE_LIST).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
-                        .requestMatchers("/oauth/**", "/oauth2/callback", "/webjars/**").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        .anyRequest().authenticated()
-            )
-            .exceptionHandling(exceptionHandlingConfigurer -> {
-                exceptionHandlingConfigurer.authenticationEntryPoint(restAuthenticationEntryPoint);
-                exceptionHandlingConfigurer.accessDeniedHandler(customAccessDeniedHandler);
-                }
-            )
-            .securityMatcher("/**")
-            .sessionManagement(sessionManagementConfigurer
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .authorizeHttpRequests(authorize ->
+                        authorize.requestMatchers(WHITE_LIST).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
+                                .requestMatchers("/oauth/**", "/oauth2/callback", "/webjars/**").permitAll()
+                                .requestMatchers("/error").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandlingConfigurer -> {
+                            exceptionHandlingConfigurer.authenticationEntryPoint(restAuthenticationEntryPoint);
+                            exceptionHandlingConfigurer.accessDeniedHandler(customAccessDeniedHandler);
+                        }
+                )
+                .securityMatcher("/**")
+                .sessionManagement(sessionManagementConfigurer
                         -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .formLogin(AbstractHttpConfigurer::disable)
-            .logout(AbstractHttpConfigurer::disable)
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(AbstractHttpConfigurer::disable)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
 }
