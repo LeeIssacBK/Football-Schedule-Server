@@ -8,17 +8,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Profile("prod")
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class Scheduler {
 
     private final LeagueService leagueService;
-    private final TeamService teamService;
-    private final PlayerService playerService;
     private final FixtureService fixtureService;
     private final TeamStatisticsService teamStatisticsService;
     private final TeamStandingService teamStandingService;
