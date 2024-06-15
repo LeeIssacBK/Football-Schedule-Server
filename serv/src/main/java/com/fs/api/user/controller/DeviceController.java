@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "0. 디바이스", description = "디바이스 정보 등록, 확인")
+@Secured("ROLE_USER")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +27,5 @@ public class DeviceController {
     public ResponseEntity save(@UserPrincipal UserDto.Simple user, @RequestBody DeviceDto.Request request) {
         return deviceService.save(user.getUserId(), request);
     }
-
 
 }

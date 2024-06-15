@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "6. 구독", description = "구독, 구독취소")
-@Secured({"ROLE_USER"})
+@Secured("ROLE_USER")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
