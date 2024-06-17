@@ -26,7 +26,7 @@ public class MyInfoService {
         User user = userRepository.findByUserId(dto.getUserId()).orElseThrow(() -> new NotFoundException("user"));
         return MyInfoDto.Response.builder()
                 .socialType(user.getSocialType())
-                .subscribeTeamCount(subscribeRepository.countByUserAndDeleteIsFalse(user))
+                .subscribeTeamCount(subscribeRepository.countByUserAndIsDeleteFalse(user))
                 .totalAlertsCount(alertRepository.countByTo(user))
                 .build();
     }
