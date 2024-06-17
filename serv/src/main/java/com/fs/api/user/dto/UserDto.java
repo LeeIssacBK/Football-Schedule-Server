@@ -8,7 +8,7 @@ public class UserDto {
 
     @Data
     public static class Simple {
-        private Long id;
+        private String status;
         private String userId;
         private String name;
         private String profileImage;

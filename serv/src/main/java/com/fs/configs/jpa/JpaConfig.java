@@ -33,7 +33,7 @@ public class JpaConfig {
                 return Optional.empty();
             }
             if (authentication.getPrincipal() instanceof UserDto.Simple principal) {
-                return userRepository.findById(principal.getId());
+                return userRepository.findByUserId(principal.getUserId());
             }
             return Optional.empty();
         }

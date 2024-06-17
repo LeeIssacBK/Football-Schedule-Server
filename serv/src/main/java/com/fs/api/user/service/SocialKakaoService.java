@@ -34,11 +34,7 @@ public class SocialKakaoService implements SocialService {
         if (auth.isPresent()) {
             //1. 회원가입이력 확인
             User user = userService.createOrFindByUser(auth.get());
-            //2. 탈퇴대기회원 확인
-            if (User.Status.PENDING.equals(user.getStatus())) {
-                throw new BadRequestException("pending");
-            }
-            //3. 서비스 토큰 발급
+            //2. 서비스 토큰 발급
             return tokenProvider.login(TokenDto.Login.builder()
                             .userId(user.getUserId())
                             .password(auth.get().getId() + auth.get().getConnected_at())
