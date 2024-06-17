@@ -1,9 +1,9 @@
 package com.fs.api.user.controller;
 
-import com.fs.api.user.dto.DeviceDto;
 import com.fs.api.user.dto.MyInfoDto;
 import com.fs.api.user.dto.UserDto;
 import com.fs.api.user.service.MyInfoService;
+import com.fs.api.user.service.UserService;
 import com.fs.configs.security.user.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,14 +20,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/mypage")
-public class MyInfoController {
+public class MyPageController {
 
     private final MyInfoService myInfoService;
+    private final UserService userService;
 
     @Operation(summary = "내 정보")
     @GetMapping("/myinfo")
     public ResponseEntity<MyInfoDto.Response> getMyInfo(@UserPrincipal UserDto.Simple user) {
         return ResponseEntity.ok(myInfoService.getMyInfo(user));
+    }
+
+    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping("/withdraw")
+    public ResponseEntity withdraw(@UserPrincipal UserDto.Simple user) {
+        userService.withdraw(user);
+        return ResponseEntity.ok().build();
     }
 
 }

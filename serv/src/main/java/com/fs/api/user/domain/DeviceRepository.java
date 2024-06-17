@@ -10,4 +10,6 @@ public interface DeviceRepository extends BaseRepository<Device> {
 
     Optional<Device> findByUuid(String uuid);
 
+    void deleteAllByUser(User user);
+
 }

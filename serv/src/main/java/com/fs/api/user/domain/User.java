@@ -5,6 +5,7 @@ import com.fs.configs.jpa.converters.ListAttributeConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -17,7 +18,14 @@ import java.util.List;
 public class User extends BaseDomain {
 
     public enum SocialType {
-        KAKAO, NAVER
+        KAKAO,
+        NAVER
+    }
+
+    public enum Status {
+        ENABLED, //활성화
+        WITHDRAWAL, //탈퇴
+        PENDING //탈퇴대기
     }
 
     @Column(nullable = false, unique = true)
@@ -34,6 +42,11 @@ public class User extends BaseDomain {
 
     @Convert(converter = ListAttributeConverter.class)
     private List<String> roles;
+
+    private Status status;
+
+    @Enumerated(value = EnumType.STRING)
+    private LocalDateTime withdrawAt;
 
 }
 

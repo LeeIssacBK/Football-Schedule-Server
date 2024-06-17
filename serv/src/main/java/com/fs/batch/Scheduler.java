@@ -4,6 +4,7 @@ import com.fs.api.alert.dto.AlertDto;
 import com.fs.api.alert.service.AlertService;
 import com.fs.api.alert.service.FirebaseService;
 import com.fs.api.football.service.*;
+import com.fs.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -24,6 +25,7 @@ public class Scheduler {
     private final TeamStandingService teamStandingService;
     private final FirebaseService firebaseService;
     private final AlertService alertService;
+    private final UserService userService;
 
     //전세계 시즌 정보를 업데이트한다.
     @Scheduled(cron = "0 0 0 1 * ?")
@@ -65,5 +67,10 @@ public class Scheduler {
         }
     }
 
+    //탈퇴 대기회원 탈퇴
+    @Scheduled(cron = "0 0 0 * * ?")
+    void updateWithdrawUser() {
+        userService.deleteWithdrawUser();
+    }
 
 }

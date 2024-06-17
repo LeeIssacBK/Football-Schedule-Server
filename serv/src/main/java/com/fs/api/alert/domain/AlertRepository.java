@@ -23,4 +23,6 @@ public interface AlertRepository extends BaseRepository<Alert> {
 
     int countByTo(User user);
 
+    void deleteAllByTo(User user);
+
 }

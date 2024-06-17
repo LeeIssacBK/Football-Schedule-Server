@@ -16,4 +16,6 @@ public interface SubscribeRepository extends BaseRepository<Subscribe> {
     Optional<List<Subscribe>> findAllByTypeAndUserUserIdAndIsDeleteFalse(SubscribeType type, String userId);
     int countByUserAndIsDeleteFalse(User user);
 
+    void deleteAllByUser(User user);
+
 }
