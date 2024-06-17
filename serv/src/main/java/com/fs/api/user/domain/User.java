@@ -43,9 +43,9 @@ public class User extends BaseDomain {
     @Convert(converter = ListAttributeConverter.class)
     private List<String> roles;
 
+    @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @Enumerated(value = EnumType.STRING)
     private LocalDateTime withdrawAt;
 
 }
