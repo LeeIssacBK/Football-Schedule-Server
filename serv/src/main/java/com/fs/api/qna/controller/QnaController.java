@@ -23,7 +23,7 @@ public class QnaController {
 
     private final QnaService qnaService;
 
-    @Operation(summary = "Q&A 내용을 가져온다.")
+    @Operation(summary = "Q & A 내용을 가져온다.")
     @PostMapping
     public ResponseEntity<List<QnaDto.Response>> get() {
         return ResponseEntity.ok(qnaService.get());

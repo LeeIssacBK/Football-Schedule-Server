@@ -19,7 +19,7 @@ public class QnaService {
     private final QnaRepository qnaRepository;
 
     public List<QnaDto.Response> get() {
-        return QnaDtoMapper.INSTANCE.toResponse(qnaRepository.findAllByDeleteIsFalse());
+        return QnaDtoMapper.INSTANCE.toResponse(qnaRepository.findAllByIsDeleteFalse());
     }
 
 }
