@@ -16,6 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class Qna extends BaseDomain {
 
     private String title;
+    private String subtitle;
 
     @Column(columnDefinition = "TEXT")
     private String content;

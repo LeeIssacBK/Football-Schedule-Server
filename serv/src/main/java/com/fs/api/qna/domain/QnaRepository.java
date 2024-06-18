@@ -7,6 +7,6 @@ import java.util.List;
 
 @Repository
 public interface QnaRepository extends BaseRepository<Qna> {
-    List<Qna> findAllByIsDeleteFalse();
+    List<Qna> findAllByIsDeleteFalseOrderByCreatedAt();
 
 }

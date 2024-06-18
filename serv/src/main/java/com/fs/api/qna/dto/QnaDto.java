@@ -13,6 +13,7 @@ public class QnaDto {
     public static class Response {
         private long id;
         private String title;
+        private String subtitle;
         private String content;
     }
 
