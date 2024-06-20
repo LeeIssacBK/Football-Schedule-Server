@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static com.fs.api.alert.domain.QAlert.alert;
@@ -64,7 +65,7 @@ public class AlertService {
     @Transactional(readOnly = true)
     public List<AlertDto.Response> getAlerts(UserDto.Simple user) {
         return AlertDtoMapper.INSTANCE.toResponses(
-                alertRepository.findAllByToUserIdOrderByFixtureDate(user.getUserId())
+                alertRepository.findAllByToUserIdAndFixtureDateIsAfterOrderByFixtureDate(user.getUserId(), LocalDateTime.now(ZoneOffset.UTC))
         );
     }
 
