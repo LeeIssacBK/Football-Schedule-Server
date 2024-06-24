@@ -65,7 +65,7 @@ public class AlertService {
     @Transactional(readOnly = true)
     public List<AlertDto.Response> getAlerts(UserDto.Simple user) {
         return AlertDtoMapper.INSTANCE.toResponses(
-                alertRepository.findAllByToUserIdAndFixtureDateIsAfterOrderByFixtureDate(user.getUserId(), LocalDateTime.now(ZoneOffset.UTC))
+                alertRepository.findAllByToUserIdAndFixtureDateIsAfterAndIsSendFalseOrderByFixtureDate(user.getUserId(), LocalDateTime.now(ZoneOffset.UTC))
         );
     }
 

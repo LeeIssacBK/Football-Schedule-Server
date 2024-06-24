@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface AlertRepository extends BaseRepository<Alert> {
 
     List<Alert> findAllByToUserIdOrderByFixtureDate(String userId);
-    List<Alert> findAllByToUserIdAndFixtureDateIsAfterOrderByFixtureDate(String userId, LocalDateTime now);
+    List<Alert> findAllByToUserIdAndFixtureDateIsAfterAndIsSendFalseOrderByFixtureDate(String userId, LocalDateTime now);
 
     Optional<Alert> findByToUserIdAndFixtureApiId(String userId, long fixtureId);
 
