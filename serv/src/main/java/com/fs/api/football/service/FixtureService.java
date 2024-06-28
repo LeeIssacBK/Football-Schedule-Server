@@ -69,8 +69,8 @@ public class FixtureService {
                                 fixture.setStatus(Fixture.Status.parse(fixtureResponse.getStatus().get_short()));
                                 fixture.setReferee(fixtureResponse.getReferee());
                                 fixture.setDate(fixtureResponse.getDate().toLocalDateTime());
-                                fixture.setHome(teamRepository.findByApiId(teamsResponse.getHome().getId()).orElseThrow(() -> new NotFoundException("home team")));
-                                fixture.setAway(teamRepository.findByApiId(teamsResponse.getAway().getId()).orElseThrow(() -> new NotFoundException("away team")));
+                                fixture.setHome(teamRepository.findByApiId(teamsResponse.getHome().getId()).orElseThrow(() -> new NotFoundException(league.getName() + " ::: " + teamsResponse.getHome().getId() + " ::: home team")));
+                                fixture.setAway(teamRepository.findByApiId(teamsResponse.getAway().getId()).orElseThrow(() -> new NotFoundException(league.getName() + " ::: " + teamsResponse.getAway().getId() + " ::: away team")));
                                 fixture.setHomeGoal(goalsResponse.getHome());
                                 fixture.setAwayGoal(goalsResponse.getAway());
                                 fixture.setMatchResult(Fixture.MatchResult.parse(teamsResponse));
@@ -83,8 +83,8 @@ public class FixtureService {
                                                 .referee(fixtureResponse.getReferee())
                                                 .date(fixtureResponse.getDate().toLocalDateTime())
                                                 .league(league)
-                                                .home(teamRepository.findByApiId(teamsResponse.getHome().getId()).orElseThrow(() -> new NotFoundException("home team")))
-                                                .away(teamRepository.findByApiId(teamsResponse.getAway().getId()).orElseThrow(() -> new NotFoundException("away team")))
+                                                .home(teamRepository.findByApiId(teamsResponse.getHome().getId()).orElseThrow(() -> new NotFoundException(league.getName() + " ::: " + teamsResponse.getHome().getId() + " ::: home team")))
+                                                .away(teamRepository.findByApiId(teamsResponse.getAway().getId()).orElseThrow(() -> new NotFoundException(league.getName() + " ::: " + teamsResponse.getAway().getId() + " ::: away team")))
                                                 .homeGoal(goalsResponse.getHome())
                                                 .awayGoal(goalsResponse.getAway())
                                                 .matchResult(Fixture.MatchResult.parse(teamsResponse))
