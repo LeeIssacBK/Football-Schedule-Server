@@ -45,8 +45,7 @@ public class Scheduler {
         teamStandingService.updateStanding();
     }
 
-    //경기일정 정보를 가지고 있는 팀 통계정보를 최신화한다.
-    @Scheduled(cron = "0 0 0 * * ?")
+    //경기일정 정보를 가지고 있는 팀 통계정보를 최신화한다. (보류)
     void updateStatistics() {
         teamStatisticsService.updateStatistics();
     }

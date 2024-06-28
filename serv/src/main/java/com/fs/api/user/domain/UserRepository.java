@@ -22,7 +22,7 @@ public interface UserRepository extends BaseRepository<User> {
     @Query(value = "update user " +
             "set status = 'WITHDRAWAL' " +
             "where status = 'PENDING' " +
-            "and withdrawAt < date_sub(now(), interval 3 day) "
+            "and withdraw_at < date_sub(now(), interval 3 day) "
             , nativeQuery = true)
     void updateWithdrawUser();
 
