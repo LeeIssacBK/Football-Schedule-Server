@@ -34,7 +34,7 @@ public class Scheduler {
     }
 
     //경기일정을 가지고 있는 모든 리그를 최신화한다.
-    @Scheduled(cron = "0 0 0 1 * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     void update() {
         fixtureService.update();
     }
