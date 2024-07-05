@@ -89,7 +89,6 @@ public class FixtureService {
                                                 .awayGoal(goalsResponse.getAway())
                                                 .matchResult(Fixture.MatchResult.parse(teamsResponse))
                                         .build());
-
                             });
                         } catch (Exception e) {
                             log.error("error fixture ::: " + fixtureResponse.getId());
