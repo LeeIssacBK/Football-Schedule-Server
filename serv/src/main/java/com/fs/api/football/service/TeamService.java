@@ -50,6 +50,8 @@ public class TeamService {
                         TeamDto.Venue venueResponse = response.getVenue();
                         try {
                             teamRepository.findByApiId(teamResponse.getId()).ifPresentOrElse(team -> {
+                                team.setLeague(league);
+                                team.setSeason(season);
                                 team.setName(teamResponse.getName());
                                 team.setCode(teamResponse.getCode());
                                 team.setFounded(teamResponse.getFounded());
