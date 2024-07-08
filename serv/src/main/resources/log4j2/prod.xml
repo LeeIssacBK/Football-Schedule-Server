@@ -50,12 +50,12 @@
 <!--      <AppenderRef ref="slack"/>-->
     </logger>
 
-    <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG" additivity="false">
+    <logger name="com.zaxxer.hikari.HikariConfig" level="ERROR" additivity="false">
       <AppenderRef ref="console2"/>
 <!--      <AppenderRef ref="slack"/>-->
     </logger>
 
-    <logger name="com.zaxxer.hikari" level="TRACE" additivity="false">
+    <logger name="com.zaxxer.hikari" level="ERROR" additivity="false">
       <AppenderRef ref="console2"/>
 <!--      <AppenderRef ref="slack"/>-->
     </logger>
