@@ -40,7 +40,7 @@ public class Scheduler {
     }
 
     //팀의 리그 순위 및 최근경기 결과 정보를 최신화한다.
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 5 0 * * ?")
     void updateStanding() {
         teamStandingService.updateStanding();
     }
