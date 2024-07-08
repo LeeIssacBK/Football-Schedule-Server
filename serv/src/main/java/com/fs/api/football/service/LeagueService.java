@@ -60,15 +60,23 @@ public class LeagueService {
                                             .country(countryRepository.findByCodeAndName(countryResponse.getCode(), countryResponse.getName())
                                                     .orElse(countryRepository.getByName("World")))
                                             .build()))).get();
-                            seasonRepository.deleteAllByLeague(league);
                             seasonsResponse.forEach(season -> {
-                                seasonRepository.save(Season.builder()
-                                        .league(league)
-                                        .year(season.getYear())
-                                        .start(LocalDate.parse(season.getStart(), DateTimeFormatter.ISO_DATE))
-                                        .end(LocalDate.parse(season.getEnd(), DateTimeFormatter.ISO_DATE))
-                                        .current(season.isCurrent())
-                                        .build());
+                                seasonRepository.findByLeagueAndCurrentIsTrue(league)
+                                        .ifPresentOrElse(entity -> {
+                                            entity.setYear(season.getYear());
+                                            entity.setStart(LocalDate.parse(season.getStart(), DateTimeFormatter.ISO_DATE));
+                                            entity.setEnd(LocalDate.parse(season.getEnd(), DateTimeFormatter.ISO_DATE));
+                                            entity.setCurrent(season.isCurrent());
+                                            seasonRepository.save(entity);
+                                        }, () -> {
+                                            seasonRepository.save(Season.builder()
+                                                    .league(league)
+                                                    .year(season.getYear())
+                                                    .start(LocalDate.parse(season.getStart(), DateTimeFormatter.ISO_DATE))
+                                                    .end(LocalDate.parse(season.getEnd(), DateTimeFormatter.ISO_DATE))
+                                                    .current(season.isCurrent())
+                                                    .build());
+                                        });
                             });
                         } catch (Exception e) {
                             log.error("error league ::: " + response.getLeague().getId() + ":" + response.getLeague().getName());
