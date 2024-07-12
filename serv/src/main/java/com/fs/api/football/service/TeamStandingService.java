@@ -74,7 +74,7 @@ public class TeamStandingService {
                                 });
                             });
                         });
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (Exception e) {
                 //do nothing...
             }
