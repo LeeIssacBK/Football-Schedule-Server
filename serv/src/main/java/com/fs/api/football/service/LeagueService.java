@@ -4,6 +4,9 @@ import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.LeagueDto;
 import com.fs.api.football.dto.LeagueDtoMapper;
 import com.fs.api.football.util.ApiProvider;
+import com.fs.api.log.domain.LogApi;
+import com.fs.api.log.domain.LogApiRepository;
+import com.fs.common.enums.LogApiType;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
@@ -34,6 +37,7 @@ public class LeagueService {
     private final LeagueRepository leagueRepository;
     private final SeasonRepository seasonRepository;
     private final JPAQueryFactory queryFactory;
+    private final LogApiRepository logApiRepository;
 
     @Transactional
     public void update() {
@@ -46,6 +50,13 @@ public class LeagueService {
                 .retrieve()
                 .bodyToMono(LeagueDto.class)
                 .subscribe(data -> {
+                    logApiRepository.save(
+                            LogApi.builder()
+                                    .type(LogApiType.LEAGUE)
+                                    .requestData(url.toUriString())
+                                    .responseData(data.getResponse().toString())
+                                    .build()
+                    );
                     data.getResponse().forEach(response -> {
                         try {
                             LeagueDto.League leagueResponse = response.getLeague();

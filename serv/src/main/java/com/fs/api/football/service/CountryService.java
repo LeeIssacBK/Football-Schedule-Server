@@ -6,7 +6,10 @@ import com.fs.api.football.domain.QCountry;
 import com.fs.api.football.dto.CountryDto;
 import com.fs.api.football.dto.CountryDtoMapper;
 import com.fs.api.football.util.ApiProvider;
+import com.fs.api.log.domain.LogApi;
+import com.fs.api.log.domain.LogApiRepository;
 import com.fs.common.enums.Continent;
+import com.fs.common.enums.LogApiType;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,6 +32,7 @@ public class CountryService {
     private final WebClient webClient;
     private final CountryRepository countryRepository;
     private final JPAQueryFactory queryFactory;
+    private final LogApiRepository logApiRepository;
 
     @Transactional
     public void update() {
@@ -41,6 +45,13 @@ public class CountryService {
                 .retrieve()
                 .bodyToMono(CountryDto.class)
                 .subscribe(data -> {
+                    logApiRepository.save(
+                            LogApi.builder()
+                                    .type(LogApiType.COUNTRY)
+                                    .requestData(url.toUriString())
+                                    .responseData(data.getResponse().toString())
+                                    .build()
+                    );
                     countryRepository.deleteAll();
                     data.getResponse().forEach(country -> {
                         countryRepository.save(Country.builder()

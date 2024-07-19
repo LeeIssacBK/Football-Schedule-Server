@@ -5,7 +5,10 @@ import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.FixtureDto;
 import com.fs.api.football.dto.FixtureDtoMapper;
 import com.fs.api.football.util.ApiProvider;
+import com.fs.api.log.domain.LogApi;
+import com.fs.api.log.domain.LogApiRepository;
 import com.fs.api.user.dto.UserDto;
+import com.fs.common.enums.LogApiType;
 import com.fs.common.enums.SubscribeType;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
@@ -42,6 +45,7 @@ public class FixtureService {
     private final SubscribeRepository subscribeRepository;
     private final AlertRepository alertRepository;
     private final JPAQueryFactory queryFactory;
+    private final LogApiRepository logApiRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void update(long leagueId) {
@@ -58,6 +62,13 @@ public class FixtureService {
                 .retrieve()
                 .bodyToMono(FixtureDto.class)
                 .subscribe(data -> {
+                    logApiRepository.save(
+                            LogApi.builder()
+                                    .type(LogApiType.FIXTURE)
+                                    .requestData(url.toUriString())
+                                    .responseData(data.getResponse().toString())
+                                    .build()
+                    );
                     data.getResponse().forEach(response -> {
                         FixtureDto.Fixture fixtureResponse = response.getFixture();
                         FixtureDto.League leagueResponse = response.getLeague();

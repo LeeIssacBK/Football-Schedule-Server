@@ -4,6 +4,9 @@ import com.fs.api.football.domain.*;
 import com.fs.api.football.dto.StandingDto;
 import com.fs.api.football.dto.StandingDtoMapper;
 import com.fs.api.football.util.ApiProvider;
+import com.fs.api.log.domain.LogApi;
+import com.fs.api.log.domain.LogApiRepository;
+import com.fs.common.enums.LogApiType;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.NotFoundException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -31,6 +34,7 @@ public class TeamStandingService {
     private final SeasonRepository seasonRepository;
     private final TeamRepository teamRepository;
     private final JPAQueryFactory queryFactory;
+    private final LogApiRepository logApiRepository;
 
     @Transactional
     public void updateStanding() {
@@ -48,6 +52,13 @@ public class TeamStandingService {
                         .retrieve()
                         .bodyToMono(StandingDto.class)
                         .subscribe(data -> {
+                            logApiRepository.save(
+                                    LogApi.builder()
+                                            .type(LogApiType.STANDING)
+                                            .requestData(url.toUriString())
+                                            .responseData(data.getResponse().toString())
+                                            .build()
+                            );
                             data.getResponse().forEach(response -> {
                                 Optional.of(response.getLeague().getStandings()).ifPresent(standings -> {
                                     standings.get(0).forEach(standing -> {
