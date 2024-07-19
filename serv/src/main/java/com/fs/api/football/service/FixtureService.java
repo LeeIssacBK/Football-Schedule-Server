@@ -156,15 +156,19 @@ public class FixtureService {
     }
 
     public void update() {
-        List<League> leagues = queryFactory.selectDistinct(fixture.league).from(fixture).stream().toList();
-        leagues.forEach(league -> {
-            try {
-                Thread.sleep(5000);
-                update(league.getApiId());
-            } catch (Exception e) {
-                //do not thing
-            }
-        });
+        queryFactory.selectDistinct(fixture.league)
+                .from(fixture)
+                .stream()
+                .toList()
+                .iterator()
+                .forEachRemaining(league -> {
+                    try {
+                        Thread.sleep(5000);
+                        update(league.getApiId());
+                    } catch (Exception e) {
+                        //do not thing
+                    }
+                });
     }
 
 }
