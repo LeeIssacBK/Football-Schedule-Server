@@ -24,7 +24,7 @@ public class LogApi extends BaseDomain {
     @Column(columnDefinition = "TEXT")
     private String requestData;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String responseData;
 
 }

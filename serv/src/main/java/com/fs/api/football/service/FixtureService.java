@@ -62,6 +62,7 @@ public class FixtureService {
                 .retrieve()
                 .bodyToMono(FixtureDto.class)
                 .subscribe(data -> {
+                    System.out.println(data.getResponse());
                     logApiRepository.save(
                             LogApi.builder()
                                     .type(LogApiType.FIXTURE)
