@@ -59,31 +59,33 @@ public class TeamStandingService {
                                             .responseData(data.getResponse().toString())
                                             .build()
                             );
-                            data.getResponse().forEach(response -> {
-                                Optional.of(response.getLeague().getStandings()).ifPresent(standings -> {
-                                    standings.get(0).forEach(standing -> {
-                                        standingRepository.findByTeamApiId(standing.getTeam().getId()).ifPresentOrElse(
-                                                entity -> {
-                                                    StandingDtoMapper.INSTANCE.update(standing, entity);
-                                                }, () -> {
-                                                    standingRepository.save(
-                                                            Standing.builder()
-                                                                    .team(teamRepository.save(teamRepository.findByApiId(standing.getTeam().getId()).orElseThrow(() -> new NotFoundException("team"))))
-                                                                    ._rank(standing.get_rank())
-                                                                    .points(standing.getPoints())
-                                                                    .goalsDiff(standing.getGoalsDiff())
-                                                                    ._group(standing.get_group())
-                                                                    .form(standing.getForm())
-                                                                    ._status(standing.get_status())
-                                                                    .description(standing.getDescription())
-                                                                    ._all(standing.get_all())
-                                                                    .home(standing.getHome())
-                                                                    .away(standing.getAway())
-                                                                    .build());
-                                                });
+                            if (!data.getResponse().isEmpty()) {
+                                data.getResponse().forEach(response -> {
+                                    Optional.of(response.getLeague().getStandings()).ifPresent(standings -> {
+                                        standings.get(0).forEach(standing -> {
+                                            standingRepository.findByTeamApiId(standing.getTeam().getId()).ifPresentOrElse(
+                                                    entity -> {
+                                                        StandingDtoMapper.INSTANCE.update(standing, entity);
+                                                    }, () -> {
+                                                        standingRepository.save(
+                                                                Standing.builder()
+                                                                        .team(teamRepository.save(teamRepository.findByApiId(standing.getTeam().getId()).orElseThrow(() -> new NotFoundException("team"))))
+                                                                        ._rank(standing.get_rank())
+                                                                        .points(standing.getPoints())
+                                                                        .goalsDiff(standing.getGoalsDiff())
+                                                                        ._group(standing.get_group())
+                                                                        .form(standing.getForm())
+                                                                        ._status(standing.get_status())
+                                                                        .description(standing.getDescription())
+                                                                        ._all(standing.get_all())
+                                                                        .home(standing.getHome())
+                                                                        .away(standing.getAway())
+                                                                        .build());
+                                                    });
+                                        });
                                     });
                                 });
-                            });
+                            }
                         });
                 Thread.sleep(5000);
             } catch (Exception e) {

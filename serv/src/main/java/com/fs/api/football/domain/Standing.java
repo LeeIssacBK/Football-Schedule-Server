@@ -14,7 +14,7 @@ import lombok.*;
 @Entity
 public class Standing extends BaseDomain {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     public Team team;
 
     private Integer _rank;

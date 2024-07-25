@@ -1,14 +1,9 @@
 package com.fs.api.football.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fs.api.football.domain.Standing;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-
-import java.util.Map;
 
 @Mapper
 public interface StandingDtoMapper {
