@@ -2,7 +2,7 @@ package com.fs.api.user.dto;
 
 import lombok.Data;
 
-public class KakaoDto {
+public class NaverDto {
 
     @Data
     public static class AccessToken {
@@ -18,15 +18,15 @@ public class KakaoDto {
     public static class Auth {
         private long id;
         private String connected_at;
-        private Properties properties;
-        private Account kakao_account;
+        private KakaoDto.Properties properties;
+        private KakaoDto.Account kakao_account;
     }
 
     @Data
     public static class Account {
         private boolean profile_nickname_needs_agreement;
         private boolean profile_image_needs_agreement;
-        private Profile profile;
+        private KakaoDto.Profile profile;
     }
 
     @Data

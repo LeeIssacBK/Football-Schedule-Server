@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final TokenProvider tokenProvider;
-    private final SocialService socialService;
+    @Qualifier("kakao")
+    private final SocialService socialKakaoService;
+    @Qualifier("naver")
+    private final SocialService socialNaverService;
 
     @Operation(summary = "관리자 로그인")
     @PostMapping("/login")
@@ -29,16 +33,16 @@ public class AuthController {
         return tokenProvider.login(login);
     }
 
-//    @Operation(summary = "web 카카오 로그인")
-//    @GetMapping("/kakao")
-//    public TokenDto.Token kakaoLogin(@RequestParam String code) {
-//        return socialService.login(code);
-//    }
-
     @Operation(summary = "flutter 카카오 로그인")
     @GetMapping("/kakao")
     public TokenDto.Token flutterKakaoLogin(@RequestParam String token) {
-        return socialService.login(token);
+        return socialKakaoService.login(token);
+    }
+
+    @Operation(summary = "flutter 네이버 로그인")
+    @GetMapping("/naver")
+    public TokenDto.Token flutterNaverLogin(@RequestParam String token) {
+        return socialNaverService.login(token);
     }
 
     @Operation(summary = "로그아웃(리프레쉬토큰 삭제)")

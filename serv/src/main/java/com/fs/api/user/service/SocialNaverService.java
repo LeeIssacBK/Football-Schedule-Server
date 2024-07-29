@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class SocialKakaoService implements SocialService {
+public class SocialNaverService implements SocialService {
 
     private final WebClient webClient;
     private final UserService userService;
@@ -29,7 +29,7 @@ public class SocialKakaoService implements SocialService {
 
     @Override
     public TokenDto.Token login(String token) {
-        Optional<KakaoDto.Auth> auth = getKakaoAuth(token);
+        Optional<KakaoDto.Auth> auth = getAuth(token);
         if (auth.isPresent()) {
             //1. 회원가입이력 확인
             User user = userService.createOrFindByUser(auth.get());
@@ -42,7 +42,7 @@ public class SocialKakaoService implements SocialService {
         throw new BadRequestException("kakao");
     }
 
-    private Optional<KakaoDto.Auth> getKakaoAuth(String token) {
+    private Optional<KakaoDto.Auth> getAuth(String token) {
         UriComponents url = UriComponentsBuilder.fromUriString(URL.KAKAO_API.getValue())
                 .path("/v2/user/me")
                 .build();
