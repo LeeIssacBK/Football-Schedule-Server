@@ -4,6 +4,7 @@ import com.fs.api.auth.dto.TokenDto;
 import com.fs.api.auth.util.TokenProvider;
 import com.fs.api.user.domain.User;
 import com.fs.api.user.dto.KakaoDto;
+import com.fs.api.user.dto.NaverDto;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class SocialNaverService implements SocialService {
 
     @Override
     public TokenDto.Token login(String token) {
-        Optional<KakaoDto.Auth> auth = getAuth(token);
+        Optional<NaverDto.Auth> auth = getAuth(token);
         if (auth.isPresent()) {
             //1. 회원가입이력 확인
             User user = userService.createOrFindByUser(auth.get());
@@ -42,16 +43,16 @@ public class SocialNaverService implements SocialService {
         throw new BadRequestException("kakao");
     }
 
-    private Optional<KakaoDto.Auth> getAuth(String token) {
-        UriComponents url = UriComponentsBuilder.fromUriString(URL.KAKAO_API.getValue())
-                .path("/v2/user/me")
+    private Optional<NaverDto.Auth> getAuth(String token) {
+        UriComponents url = UriComponentsBuilder.fromUriString(URL.NAVER_API.getValue())
+                .path("/v1/nid/me")
                 .build();
         return webClient.post()
                 .uri(url.toUri())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .bodyToMono(KakaoDto.Auth.class)
+                .bodyToMono(NaverDto.Auth.class)
                 .blockOptional();
     }
 

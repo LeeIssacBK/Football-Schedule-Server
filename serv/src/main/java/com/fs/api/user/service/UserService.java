@@ -8,6 +8,7 @@ import com.fs.api.user.domain.User;
 import com.fs.api.user.domain.User.SocialType;
 import com.fs.api.user.dto.KakaoDto;
 import com.fs.api.user.domain.UserRepository;
+import com.fs.api.user.dto.NaverDto;
 import com.fs.api.user.dto.UserDto;
 import com.fs.common.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
@@ -34,6 +35,20 @@ public class UserService {
         User user = userRepository.findByUserIdAndSocialType(String.valueOf(auth.getId()), SocialType.KAKAO)
                 .orElseGet(() -> userRepository.save(User.builder()
                         .socialType(SocialType.KAKAO)
+                        .userId(String.valueOf(auth.getId()))
+                        .password(passwordEncoder.encode(auth.getId() + auth.getConnected_at()))
+                        .roles(List.of("ROLE_USER"))
+                        .status(User.Status.ENABLED)
+                        .build()));
+        user.setName(auth.getProperties().getNickname());
+        user.setProfileImage(auth.getProperties().getProfile_image());
+        return user;
+    }
+
+    public User createOrFindByUser(NaverDto.Auth auth) {
+        User user = userRepository.findByUserIdAndSocialType(String.valueOf(auth.getId()), SocialType.KAKAO)
+                .orElseGet(() -> userRepository.save(User.builder()
+                        .socialType(SocialType.NAVER)
                         .userId(String.valueOf(auth.getId()))
                         .password(passwordEncoder.encode(auth.getId() + auth.getConnected_at()))
                         .roles(List.of("ROLE_USER"))
