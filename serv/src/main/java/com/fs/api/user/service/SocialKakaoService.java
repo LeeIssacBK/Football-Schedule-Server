@@ -4,6 +4,7 @@ import com.fs.api.auth.dto.TokenDto;
 import com.fs.api.auth.util.TokenProvider;
 import com.fs.api.user.domain.User;
 import com.fs.api.user.dto.KakaoDto;
+import com.fs.api.user.dto.NaverDto;
 import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Qualifier("kakao")
@@ -40,6 +42,11 @@ public class SocialKakaoService implements SocialService {
                     .build());
         }
         throw new BadRequestException("kakao");
+    }
+
+    @Override
+    public TokenDto.Token login(Map auth) {
+        return null;
     }
 
     private Optional<KakaoDto.Auth> getKakaoAuth(String token) {

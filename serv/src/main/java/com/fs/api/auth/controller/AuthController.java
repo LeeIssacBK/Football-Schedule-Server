@@ -2,6 +2,7 @@ package com.fs.api.auth.controller;
 
 import com.fs.api.auth.dto.TokenDto;
 import com.fs.api.auth.util.TokenProvider;
+import com.fs.api.user.dto.NaverDto;
 import com.fs.api.user.dto.UserDto;
 import com.fs.api.user.service.SocialService;
 import com.fs.configs.security.user.UserPrincipal;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Tag(name = "1. 인증", description = "로그인, 소셜, 토큰연장")
 @Slf4j
@@ -40,9 +43,9 @@ public class AuthController {
     }
 
     @Operation(summary = "flutter 네이버 로그인")
-    @GetMapping("/naver")
-    public TokenDto.Token flutterNaverLogin(@RequestParam String token) {
-        return socialNaverService.login(token);
+    @PostMapping("/naver")
+    public TokenDto.Token flutterNaverLogin(@RequestBody Map request) {
+        return socialNaverService.login(request);
     }
 
     @Operation(summary = "로그아웃(리프레쉬토큰 삭제)")

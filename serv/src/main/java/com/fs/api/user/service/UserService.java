@@ -46,16 +46,16 @@ public class UserService {
     }
 
     public User createOrFindByUser(NaverDto.Auth auth) {
-        User user = userRepository.findByUserIdAndSocialType(String.valueOf(auth.getId()), SocialType.KAKAO)
+        User user = userRepository.findByUserIdAndSocialType(String.valueOf(auth.getId()), SocialType.NAVER)
                 .orElseGet(() -> userRepository.save(User.builder()
                         .socialType(SocialType.NAVER)
                         .userId(String.valueOf(auth.getId()))
-                        .password(passwordEncoder.encode(auth.getId() + auth.getConnected_at()))
+                        .password(passwordEncoder.encode(auth.getId() + auth.getEmail()))
                         .roles(List.of("ROLE_USER"))
                         .status(User.Status.ENABLED)
                         .build()));
-        user.setName(auth.getProperties().getNickname());
-        user.setProfileImage(auth.getProperties().getProfile_image());
+        user.setName(auth.getNickname());
+        user.setProfileImage(auth.getProfileImage());
         return user;
     }
 
