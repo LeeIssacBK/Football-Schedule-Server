@@ -38,12 +38,14 @@ public class AlertService {
         request.typeCheck();
         Alert.AlertType alertType = request.getAlertType();
         Fixture fixture = fixtureRepository.findByApiId(request.getFixtureId()).orElseThrow(() -> new NotFoundException("fixture"));
-        alertRepository.save(Alert.builder()
-                        .to(userRepository.findByUserId(user.getUserId()).orElseThrow(() -> new NotFoundException("user")))
-                        .alertType(alertType)
-                        .fixture(fixture)
-                        .sendTime(generateSendTime(fixture.getDate(), alertType))
-                .build());
+        if (alertRepository.findByToUserIdAndFixtureApiId(user.getUserId(), request.getFixtureId()).isEmpty()) {
+            alertRepository.save(Alert.builder()
+                    .to(userRepository.findByUserId(user.getUserId()).orElseThrow(() -> new NotFoundException("user")))
+                    .alertType(alertType)
+                    .fixture(fixture)
+                    .sendTime(generateSendTime(fixture.getDate(), alertType))
+                    .build());
+        }
     }
 
     public void updateAlert(UserDto.Simple user, AlertDto.Request request) {
