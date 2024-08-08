@@ -94,6 +94,7 @@ public class LeagueService {
                             log.error(e.getMessage());
                         }
                     });
+                    leagueRepository.updateSeasons();
                 }, error -> {
                     throw new BadRequestException(error.getMessage());
                 });
