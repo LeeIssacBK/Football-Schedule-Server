@@ -11,10 +11,11 @@ import com.fs.common.enums.URL;
 import com.fs.common.exceptions.BadRequestException;
 import com.fs.common.exceptions.NotFoundException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -94,10 +95,14 @@ public class LeagueService {
                             log.error(e.getMessage());
                         }
                     });
-                    leagueRepository.updateSeasons();
                 }, error -> {
                     throw new BadRequestException(error.getMessage());
                 });
+    }
+
+    @Transactional
+    public void updateSeason() {
+        leagueRepository.updateSeasons();
     }
 
     public List<LeagueDto.AppResponse> get(String countryCode) {
